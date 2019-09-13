@@ -10,13 +10,14 @@ public class PlayerController : MonoBehaviour
     private float targettime;
     public float snapspeed = 1.5f;
     private int leftrightIndex = 0;
+    public Vector3 Startpos = new Vector3(0.5f,0.0f,0.0f);
 
     private float time = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
         targetpos = transform.position;
-        transform.position = new Vector3(0.0f,0.0f,0.0f);
+        transform.position = Startpos;
     }
 
     // Update is called once per frame
