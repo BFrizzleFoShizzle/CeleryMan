@@ -61,12 +61,13 @@ Material:
     - _Cuts: 2
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Falloff: 2.26
+    - _Falloff: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _InterpolationRange: 0.02
     - _Metallic: 0
-    - _MinimumLight: 0.2
+    - _MinimumLight: 0.1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02

@@ -2,11 +2,12 @@
 {
 	Properties
 	{
-		_MinimumLight ("Minimum light (lowest cut value)", Float) = 0.0
-		_Cuts ("Cuts", Int) = 2
-		_Falloff ("Falloff", Float) = 0.5
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
+		_Cuts("Cuts", Int) = 2
+		_Falloff("Falloff", Float) = 0.5
+		_MinimumLight("Minimum light (lowest cut value)", Float) = 0.0
+		_InterpolationRange ("Interpolation range (range interpolated at light cut)", Float) = 0.01
 	}
 		SubShader
 	{
@@ -19,6 +20,7 @@
 
 		float _Falloff;
 		float _MinimumLight;
+		float _InterpolationRange;
 		int _Cuts;
 
 		half4 LightingCelShader(SurfaceOutput s, half3 lightDir, half atten) {
@@ -29,20 +31,24 @@
 
 			// there's a tradeoff here: we can't currently sum up all  the light contributions
 
-			half3 lightContribution = (NdotL * atten * 2);
-
-			lightContribution = min(lightContribution, 1.0);
+			float lightContribution = min(NdotL * atten * 2, 1.0);
 
 			lightContribution = pow(lightContribution, _Falloff);
 
-			lightContribution = round(lightContribution * _Cuts) / _Cuts;
+			float cutLightContribution = lightContribution;
 
+			cutLightContribution = round(cutLightContribution * _Cuts) / _Cuts;
+			
+			float interpolationVal = lightContribution - (cutLightContribution - (0.5f / _Cuts));
+			if (interpolationVal > 0.0f && interpolationVal < _InterpolationRange)
+				cutLightContribution -= (1.0 - (interpolationVal / _InterpolationRange)) / _Cuts;
+				
 			// TODO should this shift the whole range of cuts, or just set the lowest cut?
 			// value must be BELOW 1.0/cuts to look right
-			lightContribution = max(lightContribution, _MinimumLight);
+			cutLightContribution = max(cutLightContribution, _MinimumLight);
 
 			half4 c;
-			c.rgb = s.Albedo * _LightColor0.rgb * lightContribution;
+			c.rgb = s.Albedo * _LightColor0.rgb * cutLightContribution;
 			c.a = s.Alpha;
 			return c;
 		}
