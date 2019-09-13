@@ -107,4 +107,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilesize: 5
-  snapspeed: 1.5
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.096422404
+      value: -0.0012826286
+      inSlope: 0.006174075
+      outSlope: 0.006174075
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.82536966
+    - serializedVersion: 3
+      time: 0.3022875
+      value: 0.10299579
+      inSlope: 0.9380288
+      outSlope: 0.9380288
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7012631
+      value: 0.8901343
+      inSlope: 0.9554431
+      outSlope: 0.9554431
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8968787
+      value: 0.9991104
+      inSlope: -0.004616211
+      outSlope: -0.004616211
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.841725
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  startpos: {x: 0.5, y: 0, z: 0}
+  stepTime: 0.1
