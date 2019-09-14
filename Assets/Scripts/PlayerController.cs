@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
         }
         
         if(moving){
-			if (Vector3.Distance(transform.position,targetpos) < 0.1f){
-                //transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
+			if (Vector3.Distance(transform.position,targetpos) < 0.05f){
+                transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
                 startpos = transform.position;
                 moving = false;
             }else{
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
                     targettime = time + stepTime;
 					x -= 1;
                     
-					//targetpos = transform.position + Vector3.left * tilesize;
+					targetpos = transform.position + Vector3.left * tilesize;
                     //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
 				}
@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
 					targettime = time + stepTime;
 					x += 1;
 					
+                    targetpos = transform.position + Vector3.right * tilesize;
                     //targetpos = new Vector3((x+1-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
                 }
@@ -92,9 +93,9 @@ public class PlayerController : MonoBehaviour
                         worldmanager.PlayerAdvanceToRow(z);
                     }
 			        targettime = time + stepTime;
-              
-			        
+                    targetpos = transform.position + Vector3.forward * tilesize;
                     //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize+1);
+
                     moving = true;
                 }
             }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
