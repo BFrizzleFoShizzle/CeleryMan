@@ -66,7 +66,9 @@ public class PlayerController : MonoBehaviour
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
-             if (Input.GetKey(KeyCode.A)) {
+            //LEFT 
+            //if (Input.GetKey(KeyCode.A)) {
+             if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") < 0) { 
                 if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
 					x -= 1;
@@ -74,7 +76,11 @@ public class PlayerController : MonoBehaviour
 					targetpos = transform.position + Vector3.left * tilesize;
 					moving = true;
 				}
-            }else if (Input.GetKey(KeyCode.D)) {
+            }
+             //RIGHT
+             //else if (Input.GetKey(KeyCode.D)) {
+             else if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
+            {
                 if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
 					x += 1;
@@ -82,8 +88,10 @@ public class PlayerController : MonoBehaviour
 					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
                 }
-            }else if (Input.GetKey(KeyCode.W))
-			{
+            }
+            //F 
+            //else if (Input.GetKey(KeyCode.W)){
+			else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0) {
                 if(worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
 				{
                     z += 1;

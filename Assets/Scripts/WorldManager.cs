@@ -8,10 +8,13 @@ public class WorldManager : MonoBehaviour
     public GameObject OfficePaydaySectionPrefab;
     public ObstacleBank ObstacleBank;
 	public ObstacleBank DynamicObstacleBank;
+    public GameObject DynamicTextPrefab;
+    public Color32 MoneyGainedTextColor;
+    public Color32 MoneyLostTextColor;
 
-	private class WorldRow {
+    private class WorldRow {
         private GameObject _officeSectionObject;
-        private List<GameObject> _obstacleObjects = new List<GameObject>();
+        private GameObject[] _obstacleObjects;
         private int[] _obstacles;
         public bool IsDynamicObjectRow { get; private set; }
         public bool IsPaydayRow { get; private set; }
@@ -20,25 +23,37 @@ public class WorldManager : MonoBehaviour
             IsDynamicObjectRow = isDynamicObjectRow;
             IsPaydayRow = isPaydayRow;
             _obstacles = obstacles;
+            _obstacleObjects = new GameObject[_obstacles.Length];
             _officeSectionObject = Instantiate(officeSectionPrefab, new Vector3(0,0,z), Quaternion.identity);
-            float xOffset = Constants.TILE_SIZE * 0.5f * (obstacles.Length - 1);
-            for (int i = 0; i < obstacles.Length; i++) {
-                if (obstacles[i] >= 0) {
-                    _obstacleObjects.Add(Instantiate(obstacleBank.GetObstaclePrefab(obstacles[i]), new Vector3(i-xOffset, 0, z), Quaternion.identity));
+            float xOffset = Constants.TILE_SIZE * 0.5f * (_obstacles.Length - 1);
+            for (int i = 0; i < _obstacles.Length; i++) {
+                if (_obstacles[i] != Constants.EMPTY_TILE_INDEX) {
+                    _obstacleObjects[i] = Instantiate(obstacleBank.GetObstaclePrefab(_obstacles[i]), new Vector3(i-xOffset, 0, z), Quaternion.identity);
+                    _obstacleObjects[i].transform.Rotate(0f, 90f*Random.Range(0,4), 0f);
                 }
             }
         }
 
         public void ClearObjects() {
             Destroy(_officeSectionObject);
-            foreach(GameObject obstacleObject in _obstacleObjects) {
-                Destroy(obstacleObject);
+            for (int i = 0; i < _obstacles.Length; i++) {
+                if (_obstacles[i] != Constants.EMPTY_TILE_INDEX) Destroy(_obstacleObjects[i]);
             }
         }
 
-        public int GetObstcleAt(int x) {
+        public int GetObstacleAt(int x) {
             if (x < 0 || x >= _obstacles.Length) return int.MaxValue;
             return _obstacles[x];
+        }
+
+        public bool DestroyObstacle(int x) {
+            if (x < 0 || x >= _obstacles.Length) return false;
+            if (_obstacles[x] != Constants.EMPTY_TILE_INDEX) {
+                Destroy(_obstacleObjects[x]);
+                _obstacles[x] = Constants.EMPTY_TILE_INDEX;
+                return true;
+            }
+            return false;
         }
     }
 
@@ -55,6 +70,18 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+
+    //*****************************************************************************
+    //      Text
+    //*****************************************************************************
+
+    public void SpawnDynamicText(string msg, Color32 color, int z) {
+        GameObject dynamicText = Instantiate(DynamicTextPrefab, new Vector3(0, 3, z), Quaternion.identity);
+        TextMesh tm = dynamicText.GetComponent<TextMesh>();
+        tm.text = msg;
+        tm.color = color;
+    }
+
     //*****************************************************************************
     //      Section Creation/Destruction
     //*****************************************************************************
@@ -62,6 +89,10 @@ public class WorldManager : MonoBehaviour
     private int _nextRowDestroy = 0;
     private List<WorldRow> _worldRows = new List<WorldRow>();
     private int[] _prevRowObstacles;
+    private bool _prevRowSpecial = false;
+    private int _paydayRowInterval = Constants.PAYDAY_ROW_INTERVAL_BASE;
+    private int _nextPayDay = Constants.PAYDAY_ROW_INTERVAL_FIRST;
+    private bool _paydayReached = false;
 
     public bool PlayerCanEnter(Vector3 playerPos, Vector3 offset, float distance) {
 		Ray ray = new Ray(playerPos, offset);
@@ -75,6 +106,11 @@ public class WorldManager : MonoBehaviour
 		return hits.Length == 0;
     }
 
+    public bool DestroyObstacle(int x, int z) {
+        if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
+        return _worldRows[z].DestroyObstacle(x);
+    }
+
     public bool IsDynamicObjectRow(int z) {
         if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
         return _worldRows[z].IsDynamicObjectRow;
@@ -85,21 +121,22 @@ public class WorldManager : MonoBehaviour
         return _worldRows[z].IsPaydayRow;
     }
 
+    public bool CheckPaydayReached() {
+        if (_paydayReached) {
+            _paydayReached = false;
+            return true;
+        }
+        return false;
+    }
+
     public void PlayerAdvanceToRow(int playerRow) {
         if (playerRow < _playerCurrentRow) Debug.LogError("Player Moved Back! " + _playerCurrentRow + " --> " + playerRow);
         _playerCurrentRow = playerRow;
+        if (_worldRows[_playerCurrentRow].IsPaydayRow) {
+            _paydayReached = true;
+            SpawnDynamicText("+ $" + Constants.MONEY_PAYDAY, MoneyGainedTextColor, playerRow);
+        }
         while (_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
-            CreateRow(_worldRows.Count);
-        }
-
-        while (_nextRowDestroy < _playerCurrentRow - Constants.NUMBER_ROWS_BEHIND) {
-            DestroyRow(_nextRowDestroy++);
-        }
-    }
-
-    public void PlayerAdvanceOneRow() {
-        _playerCurrentRow++;
-        while(_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
             CreateRow(_worldRows.Count);
         }
 
@@ -118,29 +155,36 @@ public class WorldManager : MonoBehaviour
 		{
 			startRow = true;
 		}
-		else if (z % Constants.PAYDAY_ROW_INTERVAL == 0)
+		else if (z == _nextPayDay)
 		{
 			paydayRow = true;
-		}
+            _nextPayDay += _paydayRowInterval;
+            _paydayRowInterval += Constants.PAYDAY_ROW_INTERVAL_DELTA;
+        }
 		else
 		{
-			dynamicRow = RandomGeneration.RollPercentageChance(20f);
+            if(!_prevRowSpecial) dynamicRow = RandomGeneration.RollPercentageChance(20f);
 		}
 
 		ObstacleBank bank = ObstacleBank;
 
         if (startRow || paydayRow) {
 			rowObstacles = RandomGeneration.GenerateRowObstacles_Empty();
-		}
+            _prevRowSpecial = true;
+
+        }
 		else if (dynamicRow)
 		{
 			rowObstacles = RandomGeneration.GenerateRowObstacles_Dynamic(DynamicObstacleBank);
 			bank = DynamicObstacleBank;
-		}
+            _prevRowSpecial = true;
+
+        }
 		else
 		{
             // rowObstacles = RandomGeneration.GenerateRowObstacles_Random(ObstacleBank);
             rowObstacles = RandomGeneration.GenerateRowObstacles_Improved1(ObstacleBank, _playerCurrentRow / 10, _prevRowObstacles);
+            _prevRowSpecial = false;
         }
 
         _worldRows.Add(new WorldRow(paydayRow ? OfficePaydaySectionPrefab : OfficeSectionPrefab, bank, z, rowObstacles, dynamicRow, paydayRow));
