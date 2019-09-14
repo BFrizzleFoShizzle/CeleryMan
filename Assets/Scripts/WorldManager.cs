@@ -76,6 +76,7 @@ public class WorldManager : MonoBehaviour
     private bool _prevRowSpecial = false;
     private int _paydayRowInterval = Constants.PAYDAY_ROW_INTERVAL_BASE;
     private int _nextPayDay = Constants.PAYDAY_ROW_INTERVAL_FIRST;
+    private bool _paydayReached = false;
 
     public bool PlayerCanEnter(Vector3 playerPos, Vector3 offset, float distance) {
 		Ray ray = new Ray(playerPos, offset);
@@ -104,21 +105,19 @@ public class WorldManager : MonoBehaviour
         return _worldRows[z].IsPaydayRow;
     }
 
+    public bool CheckPaydayReached() {
+        if (_paydayReached) {
+            _paydayReached = false;
+            return true;
+        }
+        return false;
+    }
+
     public void PlayerAdvanceToRow(int playerRow) {
         if (playerRow < _playerCurrentRow) Debug.LogError("Player Moved Back! " + _playerCurrentRow + " --> " + playerRow);
         _playerCurrentRow = playerRow;
+        if (_worldRows[_playerCurrentRow].IsPaydayRow) _paydayReached = true;
         while (_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
-            CreateRow(_worldRows.Count);
-        }
-
-        while (_nextRowDestroy < _playerCurrentRow - Constants.NUMBER_ROWS_BEHIND) {
-            DestroyRow(_nextRowDestroy++);
-        }
-    }
-    
-    public void PlayerAdvanceOneRow() {
-        _playerCurrentRow++;
-        while(_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
             CreateRow(_worldRows.Count);
         }
 

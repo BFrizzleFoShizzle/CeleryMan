@@ -27,6 +27,10 @@ public class GameController : MonoBehaviour
 
         moneytext.text = "$"+(money);
 
+        if (worldmanager.CheckPaydayReached()) {
+            money += Constants.MONEY_PAYDAY;
+        }
+
         if(money < 0){
             money = 0;
             Failed = true;

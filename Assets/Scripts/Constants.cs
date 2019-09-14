@@ -12,4 +12,6 @@ public static class Constants
     public const int PAYDAY_ROW_INTERVAL_FIRST = 20;
     public const int PAYDAY_ROW_INTERVAL_BASE = 20;
     public const int PAYDAY_ROW_INTERVAL_DELTA = 5;
+    public const int MONEY_START = 1000;
+    public const int MONEY_PAYDAY = 500;
 }
