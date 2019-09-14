@@ -48,7 +48,7 @@ half4 CellShade(half4 greyLit, half4 materialLit, half4 baseColour)
 	const int cuts = 2;
 	const float falloff = 1.0f;
 	const float minimumLight = 0.05f;
-	const float interpolationRange = 0.000f;
+	const float interpolationRange = 0.01f;
 
 	// vec from base colour to light
 	half3 greyDelta = greyLit - half4(0.5, 0.5, 0.5, 0);
