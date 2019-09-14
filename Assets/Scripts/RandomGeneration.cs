@@ -14,9 +14,29 @@ public static class RandomGeneration
         for (int i = 0; i < Constants.ROW_WIDTH; i++) obstacles.Add(Constants.EMPTY_TILE_INDEX);
         return obstacles.ToArray();
     }
+	public static int[] GenerateRowObstacles_Dynamic(ObstacleBank obstacleBank)
+	{
+		List<int> obstacles = new List<int>();
+		for (int i = 0; i < Constants.ROW_WIDTH; i++)
+			obstacles.Add(Constants.EMPTY_TILE_INDEX);
 
-    // Pure Random Obstacle Placement
-    public static int[] GenerateRowObstacles_Random(ObstacleBank obstacleBank) {
+		int numObstacles = Random.Range(1, 3);
+
+		while(numObstacles > 0)
+		{
+			int obstacleIndex = Random.Range(1, obstacles.Count-1);
+			if(obstacles[obstacleIndex] == Constants.EMPTY_TILE_INDEX)
+			{
+				obstacles[obstacleIndex] = Random.Range(0, obstacleBank.GetMaxObstacleId());
+				--numObstacles;
+			}
+		}
+
+		return obstacles.ToArray();
+	}
+
+	// Pure Random Obstacle Placement
+	public static int[] GenerateRowObstacles_Random(ObstacleBank obstacleBank) {
         List<int> obstacles = new List<int>();
         for (int i = 0; i < Constants.ROW_WIDTH; i++) {
             if (RollPercentageChance(30f)) obstacles.Add(Random.Range(0, obstacleBank.GetMaxObstacleId() + 1));

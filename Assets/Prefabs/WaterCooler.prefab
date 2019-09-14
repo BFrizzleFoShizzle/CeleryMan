@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1558506821154642489}
   - component: {fileID: 2957169241163824625}
   - component: {fileID: 298551155293933278}
+  - component: {fileID: 107697865795557186}
   m_Layer: 0
   m_Name: WaterCooler
   m_TagString: Untagged
@@ -77,6 +78,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
+--- !u!65 &107697865795557186
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3773326514732393667}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 4, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8740689823482618649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -144,6 +158,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3701727588016112575, guid: 3c075e88ebd8b0a4691cbe922028f0c1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0499c1ae9c209c741b5daf24e03f5741, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c075e88ebd8b0a4691cbe922028f0c1, type: 3}
 --- !u!4 &4339112529295050755 stripped
