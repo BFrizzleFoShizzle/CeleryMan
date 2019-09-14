@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int tilesize = 5;
-    private bool moving = false;
-    private int leftrightIndex = 0;
+
+    public WorldManager worldmanager;
+    public float tilesize = Constants.TILE_SIZE;
+    public bool moving = false;
 
 	// curve for movement position interpolation
 	public AnimationCurve moveCurve;
@@ -19,6 +20,12 @@ public class PlayerController : MonoBehaviour
 	// time to move 1 tile
 	public float stepTime = 0.1f;
 
+    //Ints for position, playpos is sent to the worldmannager from the playerconotller 
+    public int x = 5;
+    public int z = 0;
+
+    public bool Failed = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,43 +36,76 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update(){
         time += Time.deltaTime;
- 
+
+        if(Failed){
+            transform.position += Vector3.up * Time.deltaTime*1;
+            transform.Rotate(0.0f, 50.0f* Time.deltaTime, 0.0f, Space.Self);
+            float scaleM = Time.deltaTime*0.6f;
+            Vector3 targetDir = Vector3.back;
+            float step = 2.5f * Time.deltaTime;
+
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+            
+            transform.rotation = Quaternion.LookRotation(newDir);
+            if (transform.localScale.x < 1.75){
+                transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleM,transform.localScale.y+transform.localScale.y*scaleM,transform.localScale.z+transform.localScale.z*scaleM);
+            }
+            return;
+        }
+        
         if(moving){
-			// 0 when at dest, 1 when at origin
-			float stepDelta = (targettime - time) / stepTime;
-
-			//float step = Mathf.SmoothStep(0, 1, stepDelta);
-			float step = moveCurve.Evaluate(stepDelta);
-
-			transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
-
-			if (step < 0.001f){
+			if (time > targettime)
+			{
+				transform.position = targetpos;
 				startpos = transform.position;
-				moving = false;
+                moving = false;
+            }else{
+                float stepDelta = (targettime - time) / stepTime;
+			    float step = moveCurve.Evaluate(stepDelta);
+			    transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
             }
         }else{
+			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
              if (Input.GetKey(KeyCode.A)) {
-                if(leftrightIndex != 5){
+                if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
-					leftrightIndex += 1;
+					x -= 1;
+                    
 					targetpos = transform.position + Vector3.left * tilesize;
 					moving = true;
 				}
             }else if (Input.GetKey(KeyCode.D)) {
-                if(leftrightIndex != -5)
-				{
+                if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
-					leftrightIndex -= 1;
+					x += 1;
+
 					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
                 }
-            }else if (Input.GetKeyDown(KeyCode.W))
+            }else if (Input.GetKey(KeyCode.W))
 			{
-				targettime = time + stepTime;
-				targetpos = transform.position + Vector3.forward * tilesize;
-                moving = true;
-            }else if (Input.GetKeyDown(KeyCode.S)) { //Input.GetButtonDown
-                transform.position += Vector3.back * tilesize;
+                if(worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
+				{
+                    z += 1;
+                    if(worldmanager != null){
+                        worldmanager.PlayerAdvanceToRow(z);
+                    }
+			        targettime = time + stepTime;
+
+					targetpos = transform.position + Vector3.forward * tilesize;
+					moving = true;
+                }
+            }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
+                if(worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f)){
+                    z -= 1;
+                    if(worldmanager != null){
+                        worldmanager.PlayerAdvanceToRow(z);
+                    }
+			        targettime = time + stepTime;
+              
+			        targetpos = transform.position + Vector3.back * tilesize;
+                    moving = true;
+                }
 			}
         }
         
