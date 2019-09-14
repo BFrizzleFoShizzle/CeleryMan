@@ -6,8 +6,9 @@ public class WorldManager : MonoBehaviour
 {
     public GameObject OfficeSectionPrefab;
     public ObstacleBank ObstacleBank;
+	public ObstacleBank DynamicObstacleBank;
 
-    private class WorldRow {
+	private class WorldRow {
         private GameObject _officeSectionObject;
         private List<GameObject> _obstacleObjects = new List<GameObject>();
         private int[] _obstacles;
@@ -59,9 +60,17 @@ public class WorldManager : MonoBehaviour
     private List<WorldRow> _worldRows = new List<WorldRow>();
     private int[] _prevRowObstacles;
 
-    public bool PlayerCanEnter(int x, int z) {
-        if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
-        return _worldRows[z].GetObstcleAt(x) < 0;
+    public bool PlayerCanEnter(Vector3 playerPos, Vector3 offset, float distance) {
+		Ray ray = new Ray(playerPos, offset);
+		Debug.DrawRay(playerPos, offset);
+		RaycastHit[] hits = Physics.RaycastAll(ray, distance);
+
+		for(int i=0; i< hits.Length;++i)
+		{
+			Debug.Log(hits[i].collider.gameObject);
+		}
+
+		return hits.Length == 0;
     }
 
     public bool IsFreeRow(int z) {
@@ -96,14 +105,23 @@ public class WorldManager : MonoBehaviour
     private void CreateRow(int z, bool empty=false) {
         int[] rowObstacles = new int[Constants.ROW_WIDTH];
         bool freeRow = RandomGeneration.RollPercentageChance(20f);
-        if (empty || freeRow) {
+		bool dynamicRow = RandomGeneration.RollPercentageChance(20f);
+
+		ObstacleBank bank = ObstacleBank;
+
+		if (dynamicRow)
+		{
+			rowObstacles = RandomGeneration.GenerateRowObstacles_Dynamic(DynamicObstacleBank);
+			bank = DynamicObstacleBank;
+		}
+		else if (empty || freeRow) {
             rowObstacles = RandomGeneration.GenerateRowObstacles_Empty();
         } else {
             // rowObstacles = RandomGeneration.GenerateRowObstacles_Random(ObstacleBank);
             rowObstacles = RandomGeneration.GenerateRowObstacles_Improved1(ObstacleBank, _playerCurrentRow / 10, _prevRowObstacles);
             
         }
-        _worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, rowObstacles, freeRow));
+        _worldRows.Add(new WorldRow(OfficeSectionPrefab, bank, z, rowObstacles, freeRow));
         _prevRowObstacles = rowObstacles;
         Debug.Log("Created Row " + z);
     }

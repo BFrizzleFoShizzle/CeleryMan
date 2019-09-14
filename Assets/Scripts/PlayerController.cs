@@ -49,15 +49,16 @@ public class PlayerController : MonoBehaviour
 				moving = false;
             }
         }else{
+			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
              if (Input.GetKey(KeyCode.A)) {
-                if((x != 0) && (worldmanager.PlayerCanEnter(x-1,z))){
+                if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
 					x -= 1;
 					targetpos = transform.position + Vector3.left * tilesize;
 					moving = true;
 				}
             }else if (Input.GetKey(KeyCode.D)) {
-                if((x != 9) && (worldmanager.PlayerCanEnter(x+1,z))){
+                if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
 					x += 1;
 					targetpos = transform.position + Vector3.right * tilesize;
@@ -65,7 +66,8 @@ public class PlayerController : MonoBehaviour
                 }
             }else if (Input.GetKey(KeyCode.W))
 			{
-                if(worldmanager.PlayerCanEnter(x,z+1)){
+                if(worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
+				{
                     z += 1;
                     if(worldmanager != null){
                         worldmanager.PlayerAdvanceToRow(z);
@@ -76,7 +78,7 @@ public class PlayerController : MonoBehaviour
                     moving = true;
                 }
             }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
-                if(worldmanager.PlayerCanEnter(x,z-1)){
+                if(worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f)){
                     z -= 1;
                     if(worldmanager != null){
                         worldmanager.PlayerAdvanceToRow(z);
