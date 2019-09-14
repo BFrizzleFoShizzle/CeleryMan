@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class WorldManager : MonoBehaviour
 {
-    private const int ROW_WIDTH = 10;
     public GameObject OfficeSectionPrefab;
     public ObstacleBank ObstacleBank;
-    private List<WorldRow> _worldRows = new List<WorldRow>();
 
     private class WorldRow {
         private GameObject _officeSectionObject;
         private List<GameObject> _obstacleObjects = new List<GameObject>();
-        
-        public WorldRow(GameObject officeSectionPrefab, ObstacleBank obstacleBank, int z, List<int> obstacles) {
+        private int[] _obstacles;
+
+        public WorldRow(GameObject officeSectionPrefab, ObstacleBank obstacleBank, int z, int[] obstacles) {
+            _obstacles = obstacles;
             _officeSectionObject = Instantiate(officeSectionPrefab, new Vector3(0,0,z), Quaternion.identity);
-            float xOffset = 0.5f * obstacles.Count-0.5f;
-            for (int i = 0; i < obstacles.Count; i++) {
+            float xOffset = Constants.TILE_SIZE * 0.5f * (obstacles.Length - 1);
+            for (int i = 0; i < obstacles.Length; i++) {
                 if (obstacles[i] >= 0) {
                     _obstacleObjects.Add(Instantiate(obstacleBank.GetObstaclePrefab(obstacles[i]), new Vector3(i-xOffset, 0, z), Quaternion.identity));
                 }
@@ -30,59 +30,72 @@ public class WorldManager : MonoBehaviour
             }
         }
 
+        public int GetObstcleAt(int x) {
+            if (x < 0 || x >= _obstacles.Length) return int.MaxValue;
+            return _obstacles[x];
+        }
     }
-       
+
     //*****************************************************************************
-    //      Initialization
+    //      Startup
     //*****************************************************************************
-    
+
     void Start()
     {
         // FILLER CODE!!!
-        for (int i = 0; i < 12; i++) {
-            CreateNextSection();
+        // TODO Thomas
+        for (int i = 0; i < Constants.NUMBER_ROWS_AHEAD; i++) {
+            CreateRow(i);
         }
     }
 
     //*****************************************************************************
     //      Section Creation/Destruction
     //*****************************************************************************
-    private int _nextSectionDestroy = 0;
+    private int _playerCurrentRow = 0;
+    private int _nextRowDestroy = 0;
+    private List<WorldRow> _worldRows = new List<WorldRow>();
 
-    public void ProgressNextSection() {
-        CreateNextSection();
-        DestroyNextSection();
+    public bool PlayerCanEnter(int x, int z) {
+        if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
+        return _worldRows[z].GetObstcleAt(x) < 0;
     }
 
-    public void CreateNextSection() {
-        CreateSection(_worldRows.Count);
+    public void PlayerAdvanceToRow(int playerRow) {
+        if (playerRow < _playerCurrentRow) Debug.LogError("Player Moved Back! " + _playerCurrentRow + " --> " + playerRow);
+        _playerCurrentRow = playerRow;
+        while (_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
+            CreateRow(_worldRows.Count);
+        }
+
+        while (_nextRowDestroy < _playerCurrentRow - Constants.NUMBER_ROWS_BEHIND) {
+            DestroyRow(_nextRowDestroy++);
+        }
     }
 
-    private void CreateSection(int z) {    
-       _worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, GenerateRandomSectionObstacles()));
+    public void PlayerAdvanceOneRow() {
+        _playerCurrentRow++;
+        while(_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
+            CreateRow(_worldRows.Count);
+        }
+
+        while (_nextRowDestroy < _playerCurrentRow - Constants.NUMBER_ROWS_BEHIND) {
+            DestroyRow(_nextRowDestroy++);
+        }
     }
 
-    public void DestroyNextSection() {
-        DestroySection(_nextSectionDestroy);
+    private void CreateRow(int z) {
+         _worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, RandomGeneration.GenerateRowObstacles_Random(ObstacleBank)));
+        //_worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, RandomGeneration.GenerateRowObstacles_Dynamic1(ObstacleBank, _playerCurrentRow/10, )));
+        // TODO Thomas
+        Debug.Log("Created Row " + z);
     }
 
-    private void DestroySection(int z) {
+    private void DestroyRow(int z) {
         if (z>=0 && z < _worldRows.Count && _worldRows[z] != null) {
             _worldRows[z].ClearObjects();
             _worldRows[z] = null;
         }
-    }
-
-    //*****************************************************************************
-    //      Section Generation
-    //*****************************************************************************
-    
-    private List<int> GenerateRandomSectionObstacles() {
-        // FILLER CODE!!!
-        List<int> obstacles = new List<int>();
-        for (int i = 0; i < ROW_WIDTH; i++) {
-            obstacles.Add(Random.Range(-6, 3));
-        }
-        return obstacles;
+        Debug.Log("Destroyed Row " + z);
     }
 }
