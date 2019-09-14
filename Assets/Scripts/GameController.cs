@@ -8,9 +8,14 @@ public class GameController : MonoBehaviour
     public int money; 
     public int moneypersec = 100;
     public Text moneytext;
+    public bool FAILED;
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    void Restart(){
         money = 4000;
     }
 

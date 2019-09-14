@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
 			transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
 
 			if (step < 0.001f){
+                transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 				startpos = transform.position;
 				moving = false;
             }
@@ -74,7 +75,7 @@ public class PlayerController : MonoBehaviour
 			        targetpos = transform.position + Vector3.forward * tilesize;
                     moving = true;
                 }
-            }else if (Input.GetKey(KeyCode.S)) { //Input.GetButtonDown
+            }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
                 if(worldmanager.PlayerCanEnter(x,z-1)){
                     z -= 1;
                     if(worldmanager != null){
