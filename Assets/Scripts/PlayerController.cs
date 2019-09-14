@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     public WorldManager worldmanager;
     public float tilesize = Constants.TILE_SIZE;
     private bool moving = false;
-    private int leftrightIndex = 0;
 
 	// curve for movement position interpolation
 	public AnimationCurve moveCurve;
@@ -20,6 +19,9 @@ public class PlayerController : MonoBehaviour
 	private float targettime;
 	// time to move 1 tile
 	public float stepTime = 0.1f;
+
+    public int x = 5;
+    public int z = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -47,30 +49,42 @@ public class PlayerController : MonoBehaviour
             }
         }else{
              if (Input.GetKey(KeyCode.A)) {
-                if(leftrightIndex != 5){
+                if((x != 0) && (worldmanager.PlayerCanEnter(x-1,z))){
                     targettime = time + stepTime;
-					leftrightIndex += 1;
+					x -= 1;
 					targetpos = transform.position + Vector3.left * tilesize;
 					moving = true;
 				}
             }else if (Input.GetKey(KeyCode.D)) {
-                if(leftrightIndex != -5)
-				{
+                if((x != 9) && (worldmanager.PlayerCanEnter(x+1,z))){
 					targettime = time + stepTime;
-					leftrightIndex -= 1;
+					x += 1;
 					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.W))
 			{
-                if(worldmanager != null){
-                    worldmanager.PlayerAdvanceOneRow();
+                if(worldmanager.PlayerCanEnter(x,z+1)){
+                    z += 1;
+                    if(worldmanager != null){
+                        worldmanager.PlayerAdvanceToRow(z);
+                    }
+			        targettime = time + stepTime;
+              
+			        targetpos = transform.position + Vector3.forward * tilesize;
+                    moving = true;
                 }
-				targettime = time + stepTime;
-				targetpos = transform.position + Vector3.forward * tilesize;
-                moving = true;
             }else if (Input.GetKey(KeyCode.S)) { //Input.GetButtonDown
-                transform.position += Vector3.back * tilesize;
+                if(worldmanager.PlayerCanEnter(x,z-1)){
+                    z -= 1;
+                    if(worldmanager != null){
+                        worldmanager.PlayerAdvanceToRow(z);
+                    }
+			        targettime = time + stepTime;
+              
+			        targetpos = transform.position + Vector3.back * tilesize;
+                    moving = true;
+                }
 			}
         }
         
