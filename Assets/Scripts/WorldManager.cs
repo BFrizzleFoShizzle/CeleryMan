@@ -26,6 +26,7 @@ public class WorldManager : MonoBehaviour
             for (int i = 0; i < _obstacles.Length; i++) {
                 if (_obstacles[i] != Constants.EMPTY_TILE_INDEX) {
                     _obstacleObjects[i] = Instantiate(obstacleBank.GetObstaclePrefab(_obstacles[i]), new Vector3(i-xOffset, 0, z), Quaternion.identity);
+                    _obstacleObjects[i].transform.Rotate(0f, 90f*Random.Range(0,4), 0f);
                 }
             }
         }
