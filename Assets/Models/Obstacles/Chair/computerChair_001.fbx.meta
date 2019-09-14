@@ -3,7 +3,17 @@ guid: bdf04071ee1251f48b9facd043b3d387
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CompChairCushion_mat
+    second: {fileID: 2100000, guid: bcdc3c1dc580c324ab40ea1c4159ed61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CompChairPlastic_mat
+    second: {fileID: 2100000, guid: e9be1ee6dbd31c74fb32fd152cca2e36, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
