@@ -8,8 +8,11 @@ public class WorldManager : MonoBehaviour
     public GameObject OfficePaydaySectionPrefab;
     public ObstacleBank ObstacleBank;
 	public ObstacleBank DynamicObstacleBank;
+    public GameObject DynamicTextPrefab;
+    public Color32 MoneyGainedTextColor;
+    public Color32 MoneyLostTextColor;
 
-	private class WorldRow {
+    private class WorldRow {
         private GameObject _officeSectionObject;
         private GameObject[] _obstacleObjects;
         private int[] _obstacles;
@@ -67,6 +70,18 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+
+    //*****************************************************************************
+    //      Text
+    //*****************************************************************************
+
+    public void SpawnDynamicText(string msg, Color32 color, int z) {
+        GameObject dynamicText = Instantiate(DynamicTextPrefab, new Vector3(0, 3, z), Quaternion.identity);
+        TextMesh tm = dynamicText.GetComponent<TextMesh>();
+        tm.text = msg;
+        tm.color = color;
+    }
+
     //*****************************************************************************
     //      Section Creation/Destruction
     //*****************************************************************************
@@ -117,7 +132,10 @@ public class WorldManager : MonoBehaviour
     public void PlayerAdvanceToRow(int playerRow) {
         if (playerRow < _playerCurrentRow) Debug.LogError("Player Moved Back! " + _playerCurrentRow + " --> " + playerRow);
         _playerCurrentRow = playerRow;
-        if (_worldRows[_playerCurrentRow].IsPaydayRow) _paydayReached = true;
+        if (_worldRows[_playerCurrentRow].IsPaydayRow) {
+            _paydayReached = true;
+            SpawnDynamicText("+ $" + Constants.MONEY_PAYDAY, MoneyGainedTextColor, playerRow);
+        }
         while (_worldRows.Count < _playerCurrentRow + Constants.NUMBER_ROWS_AHEAD) {
             CreateRow(_worldRows.Count);
         }
