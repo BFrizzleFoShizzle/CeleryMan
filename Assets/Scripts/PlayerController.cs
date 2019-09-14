@@ -36,6 +36,12 @@ public class PlayerController : MonoBehaviour
         transform.position = startpos;
     }
 
+    void OnCollisionEnter(Collision collision){
+        if(collision.gameObject.tag == "HitPlayer"){
+            Failed = true;
+        }
+    }
+
     // Update is called once per frame
     void Update(){
         time += Time.deltaTime;
@@ -61,9 +67,6 @@ public class PlayerController : MonoBehaviour
 				transform.position = targetpos;
 				startpos = transform.position;
                 moving = false;
-                if(worldmanager.IsPaydayRow(z)){
-                    HitPayday = true;
-                }
             }else{
                 float stepDelta = (targettime - time) / stepTime;
 			    float step = moveCurve.Evaluate(stepDelta);
