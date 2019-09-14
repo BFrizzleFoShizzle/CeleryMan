@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8199354794647400420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8199354794647400423}
+  - component: {fileID: 8199354794647400422}
+  - component: {fileID: 8199354794647400421}
+  m_Layer: 0
+  m_Name: WorldManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8199354794647400423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8199354794647400420}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8199354794647400422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8199354794647400420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab9f30fa0e8a08e4785bae66134cc556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OfficeSectionPrefab: {fileID: 1614304666822355511, guid: b5e121e387aade145a647245306c0c74,
+    type: 3}
+  OfficePaydaySectionPrefab: {fileID: 2718882734341644920, guid: 050c5cbf808419542ab1c99d1e0b23cb,
+    type: 3}
+  ObstacleBank: {fileID: 8199354794647400421}
+--- !u!114 &8199354794647400421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8199354794647400420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54154f42d935504b900c5c863893390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObstaclePrefabs:
+  - {fileID: 4834343839190673132, guid: c55eed5232d34b246b2e27fbc0779ac1, type: 3}
+  - {fileID: 5525523661144007562, guid: aa864e9c58ea07c4bb8b8793578bb913, type: 3}
+  - {fileID: 6045136334750416927, guid: e058ad3c137fcc94784cf268c7684044, type: 3}
+  - {fileID: 4834343839190673132, guid: c55eed5232d34b246b2e27fbc0779ac1, type: 3}
+  - {fileID: 5525523661144007562, guid: aa864e9c58ea07c4bb8b8793578bb913, type: 3}
+  - {fileID: 8284542291208107242, guid: 8a9d45a0b1ac63e41b2968eb24e3ce95, type: 3}
+  - {fileID: 8675529281627115758, guid: d76ea8680896fca44acea39ec7294dc1, type: 3}
+  - {fileID: 2234338796833132512, guid: db33078b97ce5b240b045ee2d6160b7a, type: 3}
+  - {fileID: 3944755319645605237, guid: 2d8735ebe762a0942ba596ca2e93f3a4, type: 3}

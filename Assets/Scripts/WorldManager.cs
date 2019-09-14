@@ -5,16 +5,19 @@ using UnityEngine;
 public class WorldManager : MonoBehaviour
 {
     public GameObject OfficeSectionPrefab;
+    public GameObject OfficePaydaySectionPrefab;
     public ObstacleBank ObstacleBank;
 
     private class WorldRow {
         private GameObject _officeSectionObject;
         private List<GameObject> _obstacleObjects = new List<GameObject>();
         private int[] _obstacles;
-        public bool IsFreeRow { get; private set; }
+        public bool IsDynamicObjectRow { get; private set; }
+        public bool IsPaydayRow { get; private set; }
 
-        public WorldRow(GameObject officeSectionPrefab, ObstacleBank obstacleBank, int z, int[] obstacles, bool isFreeRow) {
-            IsFreeRow = isFreeRow;
+        public WorldRow(GameObject officeSectionPrefab, ObstacleBank obstacleBank, int z, int[] obstacles, bool isDynamicObjectRow, bool isPaydayRow) {
+            IsDynamicObjectRow = isDynamicObjectRow;
+            IsPaydayRow = isPaydayRow;
             _obstacles = obstacles;
             _officeSectionObject = Instantiate(officeSectionPrefab, new Vector3(0,0,z), Quaternion.identity);
             float xOffset = Constants.TILE_SIZE * 0.5f * (obstacles.Length - 1);
@@ -47,7 +50,7 @@ public class WorldManager : MonoBehaviour
         // FILLER CODE!!!
         // TODO Thomas
         for (int i = 0; i < Constants.NUMBER_ROWS_AHEAD; i++) {
-            CreateRow(i, i==0);
+            CreateRow(i);
         }
     }
 
@@ -64,10 +67,13 @@ public class WorldManager : MonoBehaviour
         return _worldRows[z].GetObstcleAt(x) < 0;
     }
 
-    public bool IsFreeRow(int z) {
+    public bool IsDynamicObjectRow(int z) {
         if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
-        return _worldRows[z].IsFreeRow;
+        return _worldRows[z].IsDynamicObjectRow;
+    }
 
+    public bool IsPaydayRow(int z) {
+        return false; // TODO Thomas
     }
 
     public void PlayerAdvanceToRow(int playerRow) {
@@ -93,17 +99,27 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    private void CreateRow(int z, bool empty=false) {
+    private void CreateRow(int z) {
         int[] rowObstacles = new int[Constants.ROW_WIDTH];
-        bool freeRow = RandomGeneration.RollPercentageChance(20f);
-        if (empty || freeRow) {
+        bool startRow = false;
+        bool paydayRow = false;
+        bool dynamicRow = false;
+        if(z==0 || z == 1) {
+            startRow = true;
+        } else if (z % 25 == 0) {
+            paydayRow = true;
+        } else {
+            dynamicRow = RandomGeneration.RollPercentageChance(20f);
+        }
+
+        if (startRow || paydayRow || dynamicRow) {
             rowObstacles = RandomGeneration.GenerateRowObstacles_Empty();
         } else {
             // rowObstacles = RandomGeneration.GenerateRowObstacles_Random(ObstacleBank);
             rowObstacles = RandomGeneration.GenerateRowObstacles_Improved1(ObstacleBank, _playerCurrentRow / 10, _prevRowObstacles);
             
         }
-        _worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, rowObstacles, freeRow));
+        _worldRows.Add(new WorldRow(paydayRow? OfficePaydaySectionPrefab : OfficeSectionPrefab, ObstacleBank, z, rowObstacles, dynamicRow, paydayRow));
         _prevRowObstacles = rowObstacles;
         Debug.Log("Created Row " + z);
     }
