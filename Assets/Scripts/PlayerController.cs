@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 
     public WorldManager worldmanager;
     public float tilesize = Constants.TILE_SIZE;
-    private bool moving = false;
+    public bool moving = false;
 
 	// curve for movement position interpolation
 	public AnimationCurve moveCurve;
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
             float step = 2.5f * Time.deltaTime;
 
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
-            Debug.DrawRay(transform.position, newDir, Color.red);
+            
 
             transform.rotation = Quaternion.LookRotation(newDir);
             if (transform.localScale.x < 1.75){
@@ -55,16 +55,14 @@ public class PlayerController : MonoBehaviour
         }
         
         if(moving){
-			float stepDelta = (targettime - time) / stepTime;
-
-			float step = moveCurve.Evaluate(stepDelta);
-
-			transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
-
-			if (step < 0.001f){
-                transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
-				startpos = transform.position;
-				moving = false;
+			if (Vector3.Distance(transform.position,targetpos) < 0.1f){
+                //transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
+                startpos = transform.position;
+                moving = false;
+            }else{
+                float stepDelta = (targettime - time) / stepTime;
+			    float step = moveCurve.Evaluate(stepDelta);
+			    transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
@@ -72,14 +70,17 @@ public class PlayerController : MonoBehaviour
                 if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
 					x -= 1;
-					targetpos = transform.position + Vector3.left * tilesize;
+                    
+					//targetpos = transform.position + Vector3.left * tilesize;
+                    //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
 				}
             }else if (Input.GetKey(KeyCode.D)) {
                 if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
 					x += 1;
-					targetpos = transform.position + Vector3.right * tilesize;
+					
+                    //targetpos = new Vector3((x+1-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.W))
@@ -92,7 +93,8 @@ public class PlayerController : MonoBehaviour
                     }
 			        targettime = time + stepTime;
               
-			        targetpos = transform.position + Vector3.forward * tilesize;
+			        
+                    //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize+1);
                     moving = true;
                 }
             }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown

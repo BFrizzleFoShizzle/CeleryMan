@@ -202,6 +202,11 @@ PrefabInstance:
       propertyPath: moneytext
       value: 
       objectReference: {fileID: 1590137279}
+    - target: {fileID: 7111319835553317830, guid: 21c43a9fa634df64e8da1e36225bb772,
+        type: 3}
+      propertyPath: money
+      value: 1200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21c43a9fa634df64e8da1e36225bb772, type: 3}
 --- !u!1001 &106985792
@@ -884,14 +889,14 @@ RectTransform:
   m_GameObject: {fileID: 1748488393}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1663984083}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 40, y: 0}
+  m_AnchoredPosition: {x: 69, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1748488395
