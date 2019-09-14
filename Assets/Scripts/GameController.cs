@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
         }
 
         moneytext.text = "$"+(money);
-        moneytext.color = (money<Constants.MONEY__LOW_THRESHOLD)? moneyColorLow: moneyColorNormal;
+        //moneytext.color = (money<Constants.MONEY__LOW_THRESHOLD)? moneyColorLow: moneyColorNormal;
 
         if (worldmanager.CheckPaydayReached()) {
             money += Constants.MONEY_PAYDAY;
