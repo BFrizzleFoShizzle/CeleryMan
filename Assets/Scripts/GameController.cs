@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
             money -= (int)(Time.deltaTime*moneypersec);
         }
 
-                    moneytext.text = "Money "+(money)+"$";
+                    moneytext.text = ""+(money);
 
         if(money < 0){
             money = 0;
