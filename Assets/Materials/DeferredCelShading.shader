@@ -45,7 +45,7 @@ sampler2D _CameraGBufferTexture2;
 
 half4 CellShade(half4 greyLit, half4 materialLit, half4 baseColour)
 {
-	const int cuts = 2;
+	const int cuts = 4;
 	const float falloff = 1.0f;
 	const float minimumLight = 0.05f;
 	const float interpolationRange = 0.01f;
