@@ -43,19 +43,30 @@ sampler2D _CameraGBufferTexture0;
 sampler2D _CameraGBufferTexture1;
 sampler2D _CameraGBufferTexture2;
 
-half4 CellShade(half4 light, half4 baseColour)
+half4 CellShade(half4 greyLit, half4 materialLit, half4 baseColour)
 {
-	const int cuts = 3;
+	const int cuts = 2;
 	const float falloff = 1.0f;
-	const float minimumLight = 0.00f;
-	const float interpolationRange = 0.01f;
+	const float minimumLight = 0.05f;
+	const float interpolationRange = 0.000f;
+
+	// vec from base colour to light
+	half3 greyDelta = greyLit - half4(0.5, 0.5, 0.5, 0);
+	half3 absGreyDelta = abs(greyDelta);
+	half3 greyDeltaMax = max(max(absGreyDelta.r, absGreyDelta.g), absGreyDelta.b);
+	half3 greyDeltaNorm = absGreyDelta / greyDeltaMax;
+
+	half3 colourDelta = materialLit - baseColour;
+	half3 absColourDelta = abs(colourDelta);
+	half3 colourDeltaMax = max(max(absColourDelta.r, absColourDelta.g), absColourDelta.b);
+	half3 colourDeltaNorm = absColourDelta / colourDeltaMax;
 
 	// max. colour is cell "intensity"
-	float lightFactor = max(max(light.r, light.g), light.b);
+	// should be "distance from fully-lit colour"
+	float lightFactor = max(max(greyLit.r, greyLit.g), greyLit.b);
 
-	// if you normalize (0,0,0), math breaks
-	if (lightFactor < 0.001)
-		return half4(0, 0, 0, 0);
+	if (lightFactor < 0.001f)
+		return half4(0,0,0,1);
 
 	float lightContribution = lightFactor;
 
@@ -73,9 +84,17 @@ half4 CellShade(half4 light, half4 baseColour)
 	// value must be BELOW 1.0/cuts to look right
 	cutLightContribution = max(cutLightContribution, minimumLight);
 
-	baseColour = baseColour / lightFactor;
+	float bidirectionalLightContribution = cutLightContribution - 0.5f;
 
-	return baseColour * half4(cutLightContribution, cutLightContribution, cutLightContribution, cutLightContribution);
+	half3 colourDiff = colourDelta / colourDeltaMax;
+
+	//baseColour = baseColour / lightFactor;
+	//return half4(colourDiff, 1.0f);
+	return half4(baseColour + colourDeltaNorm * half3(bidirectionalLightContribution, bidirectionalLightContribution, bidirectionalLightContribution), 1.0f);
+
+	//return half4(half3(0.5, 0.5, 0.5) + greyDeltaNorm * half3(bidirectionalLightContribution, bidirectionalLightContribution, bidirectionalLightContribution), 1.0f);
+	//return half4(half3(0.5, 0.5, 0.5) + greyDeltaNorm * half3(bidirectionalLightContribution, bidirectionalLightContribution, bidirectionalLightContribution), 1.0f);
+	//return half4(half3(0.5, 0.5, 0.5)  * half3(cutLightContribution, cutLightContribution, cutLightContribution), 1.0f);
 
 }
 
@@ -105,11 +124,15 @@ half4 CalculateLight (unity_v2f_deferred i)
     ind.diffuse = 0;
     ind.specular = 0;
 
-    half4 res = UNITY_BRDF_PBS (data.diffuseColor, data.specularColor, oneMinusReflectivity, data.smoothness, data.normalWorld, -eyeVec, light, ind);
+    half4 standardRender = UNITY_BRDF_PBS (data.diffuseColor, data.specularColor, oneMinusReflectivity, data.smoothness, data.normalWorld, -eyeVec, light, ind);
+
+	half4 whiteRender = UNITY_BRDF_PBS(half4(0.5,0.5,0.5,1), half4(0.5, 0.5, 0.5, 1), oneMinusReflectivity, data.smoothness, data.normalWorld, -eyeVec, light, ind);
+
 
 	// CEL START
-
-	return CellShade(res, res);
+	//return gbuffer0;
+	return CellShade(whiteRender, standardRender, gbuffer0);
+	//return whiteRender;
 	//return res;
 
 	// CEL END
