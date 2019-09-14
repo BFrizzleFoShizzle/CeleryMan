@@ -1046,7 +1046,7 @@ PrefabInstance:
     - target: {fileID: 8199354794647400421, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: ObstaclePrefabs.Array.size
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8199354794647400421, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
@@ -1071,6 +1071,30 @@ PrefabInstance:
       propertyPath: ObstaclePrefabs.Array.data[5]
       value: 
       objectReference: {fileID: 4834343839190673132, guid: c55eed5232d34b246b2e27fbc0779ac1,
+        type: 3}
+    - target: {fileID: 8199354794647400421, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: ObstaclePrefabs.Array.data[6]
+      value: 
+      objectReference: {fileID: 9087156697799643768, guid: aa864e9c58ea07c4bb8b8793578bb913,
+        type: 3}
+    - target: {fileID: 8199354794647400421, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: ObstaclePrefabs.Array.data[7]
+      value: 
+      objectReference: {fileID: 5605937935665456521, guid: 192654441a19a024eaefa7793b113607,
+        type: 3}
+    - target: {fileID: 8199354794647400421, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: ObstaclePrefabs.Array.data[8]
+      value: 
+      objectReference: {fileID: 8004165038344600918, guid: afff4028423cb98489cbda3f7e285ff9,
+        type: 3}
+    - target: {fileID: 8199354794647400421, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: ObstaclePrefabs.Array.data[9]
+      value: 
+      objectReference: {fileID: 9087156697799643768, guid: aa864e9c58ea07c4bb8b8793578bb913,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd037f4dc3880314ab276a88d19d3868, type: 3}

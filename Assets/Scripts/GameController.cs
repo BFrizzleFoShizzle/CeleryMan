@@ -37,4 +37,8 @@ public class GameController : MonoBehaviour
             playercontroller.Failed = true;
         }
     }
+
+    private void OnCollisionEnter(Collision collision) {
+        Debug.Log("TESTING");
+    }
 }
