@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     public int z = 0;
 
     public bool Failed = false;
+
+    //Have you hit payday, 
+    public bool HitPayday = false;
 
     // Start is called before the first frame update
     void Start()
@@ -54,11 +57,13 @@ public class PlayerController : MonoBehaviour
         }
         
         if(moving){
-			if (time > targettime)
-			{
+			if (time > targettime){ //End of movement       
 				transform.position = targetpos;
 				startpos = transform.position;
                 moving = false;
+                if(worldmanager.IsPaydayRow(z)){
+                    HitPayday = true;
+                }
             }else{
                 float stepDelta = (targettime - time) / stepTime;
 			    float step = moveCurve.Evaluate(stepDelta);
