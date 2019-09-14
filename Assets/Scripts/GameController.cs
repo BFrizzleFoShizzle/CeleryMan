@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour
     public Text moneytext;
     public bool Failed;
 
+    public Color32 moneyColorNormal;
+    public Color32 moneyColorLow;
+
     public WorldManager worldmanager;
     public PlayerController playercontroller;
 
@@ -26,11 +29,20 @@ public class GameController : MonoBehaviour
         }
 
         moneytext.text = "$"+(money);
+        moneytext.color = (money<Constants.MONEY__LOW_THRESHOLD)? moneyColorLow: moneyColorNormal;
+
+        if (worldmanager.CheckPaydayReached()) {
+            money += Constants.MONEY_PAYDAY;
+        }
 
         if(money < 0){
             money = 0;
             Failed = true;
             playercontroller.Failed = true;
         }
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        Debug.Log("TESTING");
     }
 }

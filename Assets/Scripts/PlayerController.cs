@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
             
-
             transform.rotation = Quaternion.LookRotation(newDir);
             if (transform.localScale.x < 1.75){
                 transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleM,transform.localScale.y+transform.localScale.y*scaleM,transform.localScale.z+transform.localScale.z*scaleM);
@@ -55,9 +54,10 @@ public class PlayerController : MonoBehaviour
         }
         
         if(moving){
-			if (Vector3.Distance(transform.position,targetpos) < 0.05f){
-                transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
-                startpos = transform.position;
+			if (time > targettime)
+			{
+				transform.position = targetpos;
+				startpos = transform.position;
                 moving = false;
             }else{
                 float stepDelta = (targettime - time) / stepTime;
@@ -66,26 +66,32 @@ public class PlayerController : MonoBehaviour
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
-             if (Input.GetKey(KeyCode.A)) {
+            //LEFT 
+            //if (Input.GetKey(KeyCode.A)) {
+             if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") < 0) { 
                 if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
 					x -= 1;
                     
 					targetpos = transform.position + Vector3.left * tilesize;
-                    //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
 				}
-            }else if (Input.GetKey(KeyCode.D)) {
+            }
+             //RIGHT
+             //else if (Input.GetKey(KeyCode.D)) {
+             else if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
+            {
                 if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
 					x += 1;
-					
-                    targetpos = transform.position + Vector3.right * tilesize;
-                    //targetpos = new Vector3((x+1-5)*tilesize+0.5f,transform.position.y,z*tilesize);
+
+					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
                 }
-            }else if (Input.GetKey(KeyCode.W))
-			{
+            }
+            //F 
+            //else if (Input.GetKey(KeyCode.W)){
+			else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0) {
                 if(worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
 				{
                     z += 1;
@@ -93,10 +99,9 @@ public class PlayerController : MonoBehaviour
                         worldmanager.PlayerAdvanceToRow(z);
                     }
 			        targettime = time + stepTime;
-                    targetpos = transform.position + Vector3.forward * tilesize;
-                    //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize+1);
 
-                    moving = true;
+					targetpos = transform.position + Vector3.forward * tilesize;
+					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
                 if(worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f)){
