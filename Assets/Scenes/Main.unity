@@ -475,6 +475,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1685252167988009362, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: OfficePaydaySectionPrefab
+      value: 
+      objectReference: {fileID: 2718882734341644920, guid: 050c5cbf808419542ab1c99d1e0b23cb,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd037f4dc3880314ab276a88d19d3868, type: 3}
 --- !u!114 &1777541966 stripped
