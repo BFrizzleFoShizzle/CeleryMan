@@ -20,8 +20,11 @@ public class PlayerController : MonoBehaviour
 	// time to move 1 tile
 	public float stepTime = 0.1f;
 
+    //Ints for position, playpos is sent to the worldmannager from the playerconotller 
     public int x = 5;
     public int z = 0;
+
+    public bool Failed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +36,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update(){
         time += Time.deltaTime;
- 
+
+        if(Failed){
+            return;
+        }
+        
         if(moving){
 			// 0 when at dest, 1 when at origin
 			float stepDelta = (targettime - time) / stepTime;
