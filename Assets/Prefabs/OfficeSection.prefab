@@ -45,6 +45,8 @@ GameObject:
   - component: {fileID: 7813022842305147515}
   - component: {fileID: 5771639073145269358}
   - component: {fileID: 5840001290694190539}
+  - component: {fileID: 4050863856152923568}
+  - component: {fileID: 7628555942206807348}
   m_Layer: 0
   m_Name: WallR
   m_TagString: Untagged
@@ -126,6 +128,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &4050863856152923568
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779824521126219082}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 0.3, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7628555942206807348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779824521126219082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13bb4e6094ab84b4cbb63c08d6628a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7237303484132242448
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,6 +165,8 @@ GameObject:
   - component: {fileID: 3235494895696653903}
   - component: {fileID: 996610585631975267}
   - component: {fileID: 417489625251060410}
+  - component: {fileID: 5706114036043831189}
+  - component: {fileID: 1308810792765889175}
   m_Layer: 0
   m_Name: WallL
   m_TagString: Untagged
@@ -219,6 +248,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &5706114036043831189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237303484132242448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13bb4e6094ab84b4cbb63c08d6628a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &1308810792765889175
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237303484132242448}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.000002, y: 0.3, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8793308106463798342
 GameObject:
   m_ObjectHideFlags: 0
