@@ -73,7 +73,8 @@ public class WorldManager : MonoBehaviour
     }
 
     public bool IsPaydayRow(int z) {
-        return false; // TODO Thomas
+        if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
+        return _worldRows[z].IsPaydayRow;
     }
 
     public void PlayerAdvanceToRow(int playerRow) {
@@ -106,7 +107,7 @@ public class WorldManager : MonoBehaviour
         bool dynamicRow = false;
         if(z==0 || z == 1) {
             startRow = true;
-        } else if (z % 25 == 0) {
+        } else if (z % Constants.PAYDAY_ROW_INTERVAL == 0) {
             paydayRow = true;
         } else {
             dynamicRow = RandomGeneration.RollPercentageChance(20f);

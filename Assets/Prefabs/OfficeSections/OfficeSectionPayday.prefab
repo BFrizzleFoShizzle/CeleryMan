@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 1614304666822355511, guid: b5e121e387aade145a647245306c0c74,
         type: 3}
       propertyPath: m_Name
-      value: OfficeSection
+      value: OfficeSectionPayday
       objectReference: {fileID: 0}
     - target: {fileID: 6660752938258682720, guid: b5e121e387aade145a647245306c0c74,
         type: 3}
@@ -67,5 +67,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7450159648633786469, guid: b5e121e387aade145a647245306c0c74,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450159648633786469, guid: b5e121e387aade145a647245306c0c74,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450159648633786469, guid: b5e121e387aade145a647245306c0c74,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450159648633786469, guid: b5e121e387aade145a647245306c0c74,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450159648633786469, guid: b5e121e387aade145a647245306c0c74,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6506091588261589952, guid: b5e121e387aade145a647245306c0c74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 89a7434a3c0678a4c9111139cddd8884, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5e121e387aade145a647245306c0c74, type: 3}

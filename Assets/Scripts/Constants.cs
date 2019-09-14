@@ -9,4 +9,5 @@ public static class Constants
     public const int NUMBER_ROWS_AHEAD = 20;
     public const int NUMBER_ROWS_BEHIND = 20;
     public const int EMPTY_TILE_INDEX = -1;
+    public const int PAYDAY_ROW_INTERVAL = 25;
 }
