@@ -63,7 +63,9 @@ public class PlayerController : MonoBehaviour
                 }
             }else if (Input.GetKey(KeyCode.W))
 			{
-                worldmanager.PlayerAdvanceOneRow();
+                if(worldmanager != null){
+                    worldmanager.PlayerAdvanceOneRow();
+                }
 				targettime = time + stepTime;
 				targetpos = transform.position + Vector3.forward * tilesize;
                 moving = true;
