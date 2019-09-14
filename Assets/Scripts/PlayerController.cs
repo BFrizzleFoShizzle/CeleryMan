@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int tilesize = 5;
+
+    public WorldManager worldmanager;
+    public float tilesize = Constants.TILE_SIZE;
     private bool moving = false;
     private int leftrightIndex = 0;
 
@@ -59,12 +61,13 @@ public class PlayerController : MonoBehaviour
 					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
                 }
-            }else if (Input.GetKeyDown(KeyCode.W))
+            }else if (Input.GetKey(KeyCode.W))
 			{
+                worldmanager.PlayerAdvanceOneRow();
 				targettime = time + stepTime;
 				targetpos = transform.position + Vector3.forward * tilesize;
                 moving = true;
-            }else if (Input.GetKeyDown(KeyCode.S)) { //Input.GetButtonDown
+            }else if (Input.GetKey(KeyCode.S)) { //Input.GetButtonDown
                 transform.position += Vector3.back * tilesize;
 			}
         }

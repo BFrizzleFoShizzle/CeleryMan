@@ -401,6 +401,11 @@ PrefabInstance:
       propertyPath: snapspeed
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 2475533458128656078, guid: 55327cbf3a97c664a92fe2531267ac2b,
+        type: 3}
+      propertyPath: worldmanager
+      value: 
+      objectReference: {fileID: 2078548997}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55327cbf3a97c664a92fe2531267ac2b, type: 3}
 --- !u!1 &2045402033 stripped
