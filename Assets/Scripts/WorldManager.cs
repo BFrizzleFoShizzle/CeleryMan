@@ -74,6 +74,8 @@ public class WorldManager : MonoBehaviour
     private List<WorldRow> _worldRows = new List<WorldRow>();
     private int[] _prevRowObstacles;
     private bool _prevRowSpecial = false;
+    private int _paydayRowInterval = Constants.PAYDAY_ROW_INTERVAL_BASE;
+    private int _nextPayDay = Constants.PAYDAY_ROW_INTERVAL_FIRST;
 
     public bool PlayerCanEnter(Vector3 playerPos, Vector3 offset, float distance) {
 		Ray ray = new Ray(playerPos, offset);
@@ -135,10 +137,12 @@ public class WorldManager : MonoBehaviour
 		{
 			startRow = true;
 		}
-		else if (z % Constants.PAYDAY_ROW_INTERVAL == 0)
+		else if (z == _nextPayDay)
 		{
 			paydayRow = true;
-		}
+            _nextPayDay += _paydayRowInterval;
+            _paydayRowInterval += Constants.PAYDAY_ROW_INTERVAL_DELTA;
+        }
 		else
 		{
             if(!_prevRowSpecial) dynamicRow = RandomGeneration.RollPercentageChance(20f);
