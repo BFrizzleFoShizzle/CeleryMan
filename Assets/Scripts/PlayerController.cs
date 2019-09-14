@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
                     targettime = time + stepTime;
 					x -= 1;
                     
-					//targetpos = transform.position + Vector3.left * tilesize;
+					targetpos = transform.position + Vector3.left * tilesize;
                     //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
 				}
@@ -79,8 +79,9 @@ public class PlayerController : MonoBehaviour
                 if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
 					x += 1;
-					
-                    //targetpos = new Vector3((x+1-5)*tilesize+0.5f,transform.position.y,z*tilesize);
+
+					targetpos = transform.position + Vector3.right * tilesize;
+					//targetpos = new Vector3((x+1-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.W))
@@ -92,10 +93,10 @@ public class PlayerController : MonoBehaviour
                         worldmanager.PlayerAdvanceToRow(z);
                     }
 			        targettime = time + stepTime;
-              
-			        
-                    //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize+1);
-                    moving = true;
+
+					targetpos = transform.position + Vector3.forward * tilesize;
+					//targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize+1);
+					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
                 if(worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f)){

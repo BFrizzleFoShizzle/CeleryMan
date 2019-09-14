@@ -941,7 +941,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 8199354793192950952}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8199354793192950953}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab9f30fa0e8a08e4785bae66134cc556, type: 3}
@@ -983,6 +983,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: DynamicObstacleBank
+      value: 
+      objectReference: {fileID: 8199354793192950954}
     - target: {fileID: 8199354794647400423, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1040,3 +1045,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd037f4dc3880314ab276a88d19d3868, type: 3}
+--- !u!1 &8199354793192950953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8199354794647400420, guid: bd037f4dc3880314ab276a88d19d3868,
+    type: 3}
+  m_PrefabInstance: {fileID: 8199354793192950952}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8199354793192950954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8199354793192950953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54154f42d935504b900c5c863893390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObstaclePrefabs:
+  - {fileID: 3773326514732393667, guid: d04cb7eb57f66554fa3eb50d51b203cf, type: 3}
