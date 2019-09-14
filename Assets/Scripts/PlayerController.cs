@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
             
-
             transform.rotation = Quaternion.LookRotation(newDir);
             if (transform.localScale.x < 1.75){
                 transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleM,transform.localScale.y+transform.localScale.y*scaleM,transform.localScale.z+transform.localScale.z*scaleM);
@@ -55,9 +54,10 @@ public class PlayerController : MonoBehaviour
         }
         
         if(moving){
-			if (Vector3.Distance(transform.position,targetpos) < 0.1f){
-                //transform.position = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
-                startpos = transform.position;
+			if (time > targettime)
+			{
+				transform.position = targetpos;
+				startpos = transform.position;
                 moving = false;
             }else{
                 float stepDelta = (targettime - time) / stepTime;
@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
 					x -= 1;
                     
 					targetpos = transform.position + Vector3.left * tilesize;
-                    //targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
 				}
             }else if (Input.GetKey(KeyCode.D)) {
@@ -81,7 +80,6 @@ public class PlayerController : MonoBehaviour
 					x += 1;
 
 					targetpos = transform.position + Vector3.right * tilesize;
-					//targetpos = new Vector3((x+1-5)*tilesize+0.5f,transform.position.y,z*tilesize);
 					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.W))
@@ -95,7 +93,6 @@ public class PlayerController : MonoBehaviour
 			        targettime = time + stepTime;
 
 					targetpos = transform.position + Vector3.forward * tilesize;
-					//targetpos = new Vector3((x-5)*tilesize+0.5f,transform.position.y,z*tilesize+1);
 					moving = true;
                 }
             }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
