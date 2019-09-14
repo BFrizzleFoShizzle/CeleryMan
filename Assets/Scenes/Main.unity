@@ -993,6 +993,16 @@ PrefabInstance:
       propertyPath: DynamicObstacleBank
       value: 
       objectReference: {fileID: 8199354793192950954}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: MoneyGainedTextColor.rgba
+      value: 4278205780
+      objectReference: {fileID: 0}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: MoneyLostTextColor.rgba
+      value: 4278190253
+      objectReference: {fileID: 0}
     - target: {fileID: 8199354794647400423, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: m_LocalPosition.x
