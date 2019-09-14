@@ -45,7 +45,7 @@ public class WorldManager : MonoBehaviour
         // FILLER CODE!!!
         // TODO Thomas
         for (int i = 0; i < Constants.NUMBER_ROWS_AHEAD; i++) {
-            CreateRow(i);
+            CreateRow(i, i==0);
         }
     }
 
@@ -55,6 +55,7 @@ public class WorldManager : MonoBehaviour
     private int _playerCurrentRow = 0;
     private int _nextRowDestroy = 0;
     private List<WorldRow> _worldRows = new List<WorldRow>();
+    private int[] _prevRowObstacles;
 
     public bool PlayerCanEnter(int x, int z) {
         if (z > _worldRows.Count || z < 0 || _worldRows[z] == null) return false;
@@ -84,10 +85,17 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    private void CreateRow(int z) {
-         _worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, RandomGeneration.GenerateRowObstacles_Random(ObstacleBank)));
-        //_worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, RandomGeneration.GenerateRowObstacles_Dynamic1(ObstacleBank, _playerCurrentRow/10, )));
-        // TODO Thomas
+    private void CreateRow(int z, bool empty=false) {
+        int[] rowObstacles = new int[Constants.ROW_WIDTH];
+        if (empty) {
+            rowObstacles = RandomGeneration.GenerateRowObstacles_Empty();
+        } else {
+            // rowObstacles = RandomGeneration.GenerateRowObstacles_Random(ObstacleBank);
+            rowObstacles = RandomGeneration.GenerateRowObstacles_Improved1(ObstacleBank, _playerCurrentRow / 10, _prevRowObstacles);
+            
+        }
+        _worldRows.Add(new WorldRow(OfficeSectionPrefab, ObstacleBank, z, rowObstacles));
+        _prevRowObstacles = rowObstacles;
         Debug.Log("Created Row " + z);
     }
 
