@@ -5,24 +5,32 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public int money; 
+    public int money = 4000; 
     public int moneypersec = 100;
     public Text moneytext;
-    public bool FAILED;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool Failed;
 
-    void Restart(){
-        money = 4000;
+    public WorldManager worldmanager;
+    public PlayerController playercontroller;
+
+    // Start is called before the first frame update
+    void Start(){
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        money -= (int)(Time.deltaTime*moneypersec);
-        moneytext.text = "Money "+(money)+"$";
+        if(Failed == false){
+            money -= (int)(Time.deltaTime*moneypersec);
+        }
+
+                    moneytext.text = ""+(money);
+
+        if(money < 0){
+            money = 0;
+            Failed = true;
+            playercontroller.Failed = true;
+        }
     }
 }

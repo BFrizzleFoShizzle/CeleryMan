@@ -20,8 +20,11 @@ public class PlayerController : MonoBehaviour
 	// time to move 1 tile
 	public float stepTime = 0.1f;
 
+    //Ints for position, playpos is sent to the worldmannager from the playerconotller 
     public int x = 5;
     public int z = 0;
+
+    public bool Failed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +36,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update(){
         time += Time.deltaTime;
- 
+
+        if(Failed){
+            transform.position += Vector3.up * Time.deltaTime*1;
+            transform.Rotate(0.0f, 50.0f* Time.deltaTime, 0.0f, Space.Self);
+            float scaleM = Time.deltaTime*0.6f;
+            Vector3 targetDir = Vector3.back;
+            float step = 2.5f * Time.deltaTime;
+
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+            Debug.DrawRay(transform.position, newDir, Color.red);
+
+            transform.rotation = Quaternion.LookRotation(newDir);
+            if (transform.localScale.x < 1.75){
+                transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleM,transform.localScale.y+transform.localScale.y*scaleM,transform.localScale.z+transform.localScale.z*scaleM);
+            }
+            return;
+        }
+        
         if(moving){
-			// 0 when at dest, 1 when at origin
 			float stepDelta = (targettime - time) / stepTime;
 
-			//float step = Mathf.SmoothStep(0, 1, stepDelta);
 			float step = moveCurve.Evaluate(stepDelta);
 
 			transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));

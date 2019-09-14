@@ -9,12 +9,12 @@ public class RollingWatejug : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.velocity = new Vector3(-5, 0, 0);
+        rb.velocity = new Vector3(-5, rb.velocity.y, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
+
+	}
 }
