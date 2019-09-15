@@ -1036,6 +1036,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7655503633372837963, guid: 24587224fb238a646a998d14e54f0485,
         type: 3}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: DynamicChairsPrefab
+      value: 
+      objectReference: {fileID: 7175241073104138159, guid: b4cb352df950ffb479ac3e38be830d73,
+        type: 3}
     - target: {fileID: 8199354794647400423, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: m_LocalPosition.x

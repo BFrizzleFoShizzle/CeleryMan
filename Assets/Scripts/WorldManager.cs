@@ -8,6 +8,7 @@ public class WorldManager : MonoBehaviour
 	public GameObject OfficePrinterSectionPrefab;
 	public GameObject OfficePaydaySectionPrefab;
 	public GameObject DynamicPrinterPrefab;
+	public GameObject DynamicChairsPrefab;
     public ObstacleBank ObstacleBank;
 	public ObstacleBank DynamicObstacleBank;
     public GameObject DynamicTextPrefab;
@@ -37,7 +38,7 @@ public class WorldManager : MonoBehaviour
         }
 
 		// spawn row with 1 obstacle
-		public WorldRow(GameObject officeSectionPrefab, GameObject obstaclePrefab, int z, bool isDynamicObjectRow, bool isPaydayRow)
+		public WorldRow(GameObject officeSectionPrefab, GameObject obstaclePrefab, float rotation, int x, int z, bool isDynamicObjectRow, bool isPaydayRow)
 		{
 			IsDynamicObjectRow = isDynamicObjectRow;
 			IsPaydayRow = isPaydayRow;
@@ -45,8 +46,8 @@ public class WorldManager : MonoBehaviour
 			_obstacleObjects = new GameObject[_obstacles.Length];
 			_officeSectionObject = Instantiate(officeSectionPrefab, new Vector3(0, 0, z), Quaternion.identity);
 			float xOffset = Constants.TILE_SIZE * 0.5f * (_obstacles.Length - 1);
-			_obstacleObjects[0] = Instantiate(obstaclePrefab, new Vector3(0 - xOffset, 0, z), Quaternion.identity);
-			_obstacleObjects[0].transform.Rotate(0f, 90f * Random.Range(0, 4), 0f);
+			_obstacleObjects[0] = Instantiate(obstaclePrefab, new Vector3(x - xOffset, 0, z), Quaternion.identity);
+			_obstacleObjects[0].transform.Rotate(0f, rotation, 0f);
 		}
 
 		public void ClearObjects() {
@@ -193,20 +194,28 @@ public class WorldManager : MonoBehaviour
 		else if (dynamicRow)
 		{
 			bool spawnPrinter = RandomGeneration.RollPercentageChance(30f);
-
+			bool spawnChairs = RandomGeneration.RollPercentageChance(30f);
 			if (spawnPrinter)
 			{
-				Debug.Log("Spawning printer");
 				rowObstacles = new int[Constants.ROW_WIDTH];
 				// all tiles are fair game
 				_prevRowObstacles = rowObstacles;
-				_worldRows.Add(new WorldRow(OfficePrinterSectionPrefab, DynamicPrinterPrefab, z, dynamicRow, paydayRow));
+				_worldRows.Add(new WorldRow(OfficePrinterSectionPrefab, DynamicPrinterPrefab, Random.Range(0,4) * 90.0f, 0, z, dynamicRow, paydayRow));
+				_prevRowSpecial = true;
+				return;
+			}
+			else if (spawnChairs)
+			{
+				rowObstacles = new int[Constants.ROW_WIDTH];
+				// all tiles are fair game
+				_prevRowObstacles = rowObstacles;
+				int chairPos = Random.Range(1, Constants.ROW_WIDTH - 2);
+				_worldRows.Add(new WorldRow(OfficeSectionPrefab, DynamicChairsPrefab, Random.Range(0,2)*180, chairPos, z, dynamicRow, paydayRow));
 				_prevRowSpecial = true;
 				return;
 			}
 			else
 			{
-
 				rowObstacles = RandomGeneration.GenerateRowObstacles_Dynamic(DynamicObstacleBank);
 				bank = DynamicObstacleBank;
 				_prevRowSpecial = true;
