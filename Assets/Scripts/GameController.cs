@@ -8,8 +8,7 @@ public class GameController : MonoBehaviour
     public int money = 4000; 
     public int moneypersec = 100;
     public Text moneytext;
-    public bool Failed;
-
+    
     public Color32 moneyColorNormal;
     public Color32 moneyColorLow;
 
@@ -24,8 +23,10 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Failed == false){
+        if(playercontroller.Failed == false){
             money -= (int)(Time.deltaTime*moneypersec);
+        } else {
+            money = 0;
         }
 
         moneytext.text = "$"+(money);
@@ -37,7 +38,6 @@ public class GameController : MonoBehaviour
 
         if(money < 0){
             money = 0;
-            Failed = true;
             playercontroller.Failed = true;
         }
     }
