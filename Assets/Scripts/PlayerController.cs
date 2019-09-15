@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
             }else{
                 float stepDelta = (targettime - time) / stepTime;
 			    float step = moveCurve.Evaluate(stepDelta);
-			    transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
+			    transform.position = (startpos * step) + (targetpos * (1.0f - step));
                 transform.localScale = StartScale;
             }
         }else{
