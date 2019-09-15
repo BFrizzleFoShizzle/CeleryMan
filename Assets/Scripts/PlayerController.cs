@@ -32,10 +32,13 @@ public class PlayerController : MonoBehaviour
     public bool HitPayday = false;
     public bool ChargingSmash = false;
 
+    //code for smashing
     private Vector3 StartScale;
+    private Quaternion StartRotate;
     private float SmashBlocks = 0.0f;
     private GameObject ghostmarkerinst;
     private float Smashstarttime = 0;
+    private bool Tempinv = false; //temporery invunribility 
 
     // Start is called before the first frame update
     void Start()
@@ -43,12 +46,16 @@ public class PlayerController : MonoBehaviour
         targetpos = transform.position;
         transform.position = startpos;
         StartScale = transform.localScale;
+        StartRotate = transform.rotation;
         ghostmarkerinst = Instantiate(ghostmarker, transform.position, Quaternion.identity);
+        ghostmarkerinst.SetActive(false);
     }
 
     void OnCollisionEnter(Collision collision){
         if(collision.gameObject.tag == "HitPlayer"){
-            Failed = true;
+            if(Tempinv == false){
+                Failed = true;
+            }
         }
     }
 
@@ -84,11 +91,14 @@ public class PlayerController : MonoBehaviour
 				transform.position = targetpos;
 				startpos = transform.position;
                 moving = false;
+                Tempinv = false;
             }else{
                 float stepDelta = (targettime - time) / stepTime;
 			    float step = moveCurve.Evaluate(stepDelta);
 			    transform.position = (startpos * step) + (targetpos * (1.0f - step));
+                transform.rotation = StartRotate;
                 transform.localScale = StartScale;
+                
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
@@ -112,14 +122,19 @@ public class PlayerController : MonoBehaviour
 			if (ChargingSmash && (Input.GetButton("Vertical") == false))
 			{
 				int WholeBlocks = (int)(SmashBlocks);
+                for(int i = 0;i<WholeBlocks+1;i++){
+                    worldmanager.DestroyObstacle(x,z+i);
+                }
 				z += WholeBlocks;
 				if (worldmanager != null)
 				{
 					worldmanager.PlayerAdvanceToRow(z);
 				}
+                
 				targettime = time + stepTime;
-
+                Tempinv = true;
 				targetpos = transform.position + Vector3.forward * tilesize * WholeBlocks;
+                ghostmarkerinst.SetActive(false);
 				moving = true;
 				ChargingSmash = false;
 				return;
@@ -131,17 +146,19 @@ public class PlayerController : MonoBehaviour
 				SmashBlocks = 0.0f;
 				if (ChargingSmash)
 				{
-
+                    ghostmarkerinst.SetActive(true);
 					SmashBlocks = (time - Smashstarttime) / Constants.SMASH_TILE_CHARGE + Constants.SMASH_MIN_DIST;
 
 					if (SmashBlocks > Constants.SMASH_MAX_DIST)
 					{
 						SmashBlocks = Constants.SMASH_MAX_DIST;
-					}
-					else
-					{
+					}else{
 						float scaleMo = Time.deltaTime * 0.3f;
-						transform.localScale = new Vector3(transform.localScale.x + transform.localScale.x * scaleMo, transform.localScale.y + transform.localScale.y * scaleMo, transform.localScale.z + transform.localScale.z * scaleMo);
+						//transform.localScale = new Vector3(transform.localScale.x + transform.localScale.x * scaleMo, transform.localScale.y + transform.localScale.y * scaleMo, transform.localScale.z + transform.localScale.z * scaleMo);
+                        print(transform.rotation.eulerAngles.x);
+                        if(transform.rotation.eulerAngles.x < 75){
+                            transform.Rotate(100.0f* Time.deltaTime, 0.0f, 0.0f, Space.Self);
+                        }
 					}
 					ghostmarkerinst.transform.position = transform.position + Vector3.forward * ((int)(SmashBlocks));
 
