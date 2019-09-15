@@ -92,20 +92,84 @@ public class PlayerController : MonoBehaviour
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
-            //LEFT 
-            //if (Input.GetKey(KeyCode.A)) {
-             if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") < 0) { 
+
+			if (Input.GetKey(KeyCode.M))
+			{ //Input.GetButtonDown
+				if (worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f))
+				{
+					z -= 1;
+					if (worldmanager != null)
+					{
+						worldmanager.PlayerAdvanceToRow(z);
+					}
+					targettime = time + stepTime;
+
+					targetpos = transform.position + Vector3.back * tilesize;
+					moving = true;
+				}
+			}
+
+			if (ChargingSmash && (Input.GetButton("Vertical") == false))
+			{
+				int WholeBlocks = (int)(SmashBlocks);
+				z += WholeBlocks;
+				if (worldmanager != null)
+				{
+					worldmanager.PlayerAdvanceToRow(z);
+				}
+				targettime = time + stepTime;
+
+				targetpos = transform.position + Vector3.forward * tilesize * WholeBlocks;
+				moving = true;
+				ChargingSmash = false;
+				return;
+			}
+
+			//W
+			if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0)
+			{
+				SmashBlocks = 0.0f;
+				if (ChargingSmash)
+				{
+
+					SmashBlocks = (time - Smashstarttime) / Constants.SMASH_TILE_CHARGE + Constants.SMASH_MIN_DIST;
+
+					if (SmashBlocks > Constants.SMASH_MAX_DIST)
+					{
+						SmashBlocks = Constants.SMASH_MAX_DIST;
+					}
+					else
+					{
+						float scaleMo = Time.deltaTime * 0.3f;
+						transform.localScale = new Vector3(transform.localScale.x + transform.localScale.x * scaleMo, transform.localScale.y + transform.localScale.y * scaleMo, transform.localScale.z + transform.localScale.z * scaleMo);
+					}
+					ghostmarkerinst.transform.position = transform.position + Vector3.forward * ((int)(SmashBlocks));
+
+				}
+				else
+				{
+					ChargingSmash = true;
+					Smashstarttime = time;
+					ghostmarkerinst.transform.position = transform.position;
+				}
+				return;
+			}
+			
+			//LEFT 
+			//if (Input.GetKey(KeyCode.A)) {
+			if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") < 0) { 
                 if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
 					x -= 1;
                     
 					targetpos = transform.position + Vector3.left * tilesize;
 					moving = true;
+					return;
 				}
             }
              //RIGHT
              //else if (Input.GetKey(KeyCode.D)) {
-             else if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
+            if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
             {
                 if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
@@ -113,69 +177,27 @@ public class PlayerController : MonoBehaviour
 
 					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
+					return;
                 }
             }
-            //F 
-            //else if (Input.GetKey(KeyCode.W)){
-			else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0) {
-                if(worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
+
+			//else if (Input.GetKey(KeyCode.W)){
+			if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0)
+			{
+				if (worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
 				{
-                    z += 1;
-                    if(worldmanager != null){
-                        worldmanager.PlayerAdvanceToRow(z);
-                    }
-			        targettime = time + stepTime;
+					z += 1;
+					if (worldmanager != null)
+					{
+						worldmanager.PlayerAdvanceToRow(z);
+					}
+					targettime = time + stepTime;
 
 					targetpos = transform.position + Vector3.forward * tilesize;
 					moving = true;
-                }
-
-            }else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0) {
-                
-                SmashBlocks = 0.0f;
-                
-                if(ChargingSmash){
-                    
-                    SmashBlocks = (time-Smashstarttime)/Constants.SMASH_TILE_CHARGE+Constants.SMASH_MIN_DIST;
-                   
-                    if(SmashBlocks > Constants.SMASH_MAX_DIST){
-                        SmashBlocks = Constants.SMASH_MAX_DIST;
-                    }else{
-                        float scaleMo = Time.deltaTime*0.3f;
-                        transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleMo,transform.localScale.y+transform.localScale.y*scaleMo,transform.localScale.z+transform.localScale.z*scaleMo);
-                    }
-                    ghostmarkerinst.transform.position = transform.position + Vector3.forward*((int)(SmashBlocks));
-                    
-                }else{
-                    ChargingSmash = true;
-                    Smashstarttime = time;
-                    ghostmarkerinst.transform.position = transform.position;
-                }
-            }else if (ChargingSmash && (Input.GetButton("Vertical") == false)){
-                int WholeBlocks = (int)(SmashBlocks);
-                z += WholeBlocks;
-                if(worldmanager != null){
-                    worldmanager.PlayerAdvanceToRow(z);
-                }
-			    targettime = time + stepTime;
-              
-			    targetpos = transform.position + Vector3.forward * tilesize*WholeBlocks;
-                moving = true;
-                ChargingSmash = false;
-
-			}else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
-                if(worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f)){
-                    z -= 1;
-                    if(worldmanager != null){
-                        worldmanager.PlayerAdvanceToRow(z);
-                    }
-			        targettime = time + stepTime;
-              
-			        targetpos = transform.position + Vector3.back * tilesize;
-                    moving = true;
-                }
+					return;
+				}
 			}
-        }
-        
+		}
     }
 }
