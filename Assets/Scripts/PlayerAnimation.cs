@@ -10,6 +10,6 @@ public class PlayerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetBool("running", pController.moving);
+        anim.SetBool("running", pController.moving && !pController.Failed);
     }
 }
