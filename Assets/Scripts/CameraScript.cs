@@ -6,6 +6,7 @@ public class CameraScript : MonoBehaviour
 {
     public float followdistance = 40.0f;
     public GameObject player;
+	private Vector3 velocity;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,6 @@ public class CameraScript : MonoBehaviour
     void Update()
     {
         Vector3 idealpos = new Vector3(transform.position.x,transform.position.y,player.transform.position.z - followdistance);
-        transform.position = Vector3.MoveTowards(transform.position,idealpos,Time.deltaTime*12f);
-    }
+		transform.position = Vector3.SmoothDamp(transform.position, idealpos, ref velocity, 0.05f);
+	}
 }
