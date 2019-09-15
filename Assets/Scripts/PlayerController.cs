@@ -83,7 +83,10 @@ public class PlayerController : MonoBehaviour
             if (transform.localScale.x < 1.75){
                 transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleM,transform.localScale.y+transform.localScale.y*scaleM,transform.localScale.z+transform.localScale.z*scaleM);
             }
-            return;
+
+			if(transform.position.y > 7)
+				SceneManager.LoadScene(2);
+			return;
         }
         
         if(moving){
