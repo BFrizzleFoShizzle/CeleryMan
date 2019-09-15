@@ -15,4 +15,8 @@ public static class Constants
     public const int MONEY_START = 1000;
     public const int MONEY_PAYDAY = 500;
     public const int MONEY__LOW_THRESHOLD = 500;
+
+    public const float SMASH_MIN_DIST = 3.0f;
+    public const float SMASH_MAX_DIST = 8.0f;
+    public const float SMASH_TILE_CHARGE = 0.3f;
 }

@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 StartScale;
     private float SmashBlocks = 0.0f;
     private GameObject ghostmarkerinst;
+    private float Smashstarttime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -130,23 +131,24 @@ public class PlayerController : MonoBehaviour
                 }
 
             }else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0) {
-                float starttime = 0;
+                
                 SmashBlocks = 0.0f;
                 
                 if(ChargingSmash){
                     
-                    SmashBlocks = (time-starttime)/0.5f;
-                    ghostmarkerinst.transform.position = transform.position + Vector3.forward*((int)(SmashBlocks));
-                    if(SmashBlocks > 5){
-                        SmashBlocks = 5.0f;
+                    SmashBlocks = (time-Smashstarttime)/Constants.SMASH_TILE_CHARGE+Constants.SMASH_MIN_DIST;
+                   
+                    if(SmashBlocks > Constants.SMASH_MAX_DIST){
+                        SmashBlocks = Constants.SMASH_MAX_DIST;
                     }else{
                         float scaleMo = Time.deltaTime*0.3f;
                         transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleMo,transform.localScale.y+transform.localScale.y*scaleMo,transform.localScale.z+transform.localScale.z*scaleMo);
                     }
+                    ghostmarkerinst.transform.position = transform.position + Vector3.forward*((int)(SmashBlocks));
                     
                 }else{
                     ChargingSmash = true;
-                    starttime = time;
+                    Smashstarttime = time;
                     ghostmarkerinst.transform.position = transform.position;
                 }
             }else if (ChargingSmash && (Input.GetButton("Vertical") == false)){
