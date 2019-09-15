@@ -154,10 +154,10 @@ public class PlayerController : MonoBehaviour
 						SmashBlocks = Constants.SMASH_MAX_DIST;
 					}else{
 						float scaleMo = Time.deltaTime * 0.3f;
-						//transform.localScale = new Vector3(transform.localScale.x + transform.localScale.x * scaleMo, transform.localScale.y + transform.localScale.y * scaleMo, transform.localScale.z + transform.localScale.z * scaleMo);
-                        print(transform.rotation.eulerAngles.x);
+						transform.localScale = new Vector3(transform.localScale.x + transform.localScale.x * scaleMo, transform.localScale.y + transform.localScale.y * scaleMo, transform.localScale.z + transform.localScale.z * scaleMo);
+                        //print(transform.rotation.eulerAngles.x);
                         if(transform.rotation.eulerAngles.x < 75){
-                            transform.Rotate(100.0f* Time.deltaTime, 0.0f, 0.0f, Space.Self);
+                            //transform.Rotate(100.0f* Time.deltaTime, 0.0f, 0.0f, Space.Self);
                         }
 					}
 					ghostmarkerinst.transform.position = transform.position + Vector3.forward * ((int)(SmashBlocks));
