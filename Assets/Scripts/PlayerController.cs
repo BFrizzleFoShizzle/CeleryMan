@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -45,6 +46,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update(){
         time += Time.deltaTime;
+
+        if(Input.GetButton("Cancel"))
+        {
+            SceneManager.LoadScene(0);
+        }
 
         if(Failed){
             transform.position += Vector3.up * Time.deltaTime*1;
