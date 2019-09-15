@@ -28,8 +28,10 @@ public class GameController : MonoBehaviour
 	// if a watercooler flies over your head, win some bonus money fo' dat sicc stunt
 	bool CheckForOverheadWater()
 	{
-		Ray ray = new Ray(playercontroller.transform.position, playercontroller.transform.up);
-		Debug.DrawRay(playercontroller.transform.position, playercontroller.transform.up * 10.0f);
+		Vector3 up = new Vector3(0, 1, 0);
+		Vector3 headPosition = playercontroller.transform.position + up * 1.3f;
+		Ray ray = new Ray(headPosition, up);
+		//Debug.DrawRay(headPosition, up * 10.0f);
 		RaycastHit[] hits = Physics.RaycastAll(ray, 10.0f);
 		foreach (RaycastHit hit in hits)
 		{
