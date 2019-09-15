@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
 	public WorldManager worldmanager;
     public PlayerController playercontroller;
 
+	public static int score = 0;
+
     // Start is called before the first frame update
     void Start(){
         startTime = Time.time;
@@ -58,7 +60,9 @@ public class GameController : MonoBehaviour
             currentTimeScore = Mathf.RoundToInt((Time.time - startTime)* 10);
         } else {
             money = 0;
-        }
+			score = currentTimeScore;
+
+		}
 
         timeText.text = "" + currentTimeScore;
         moneytext.text = "$"+(money);
