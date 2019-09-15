@@ -207,6 +207,16 @@ PrefabInstance:
       propertyPath: money
       value: 1200
       objectReference: {fileID: 0}
+    - target: {fileID: 7111319835553317830, guid: 21c43a9fa634df64e8da1e36225bb772,
+        type: 3}
+      propertyPath: moneyColorNormal.rgba
+      value: 4279776335
+      objectReference: {fileID: 0}
+    - target: {fileID: 7111319835553317830, guid: 21c43a9fa634df64e8da1e36225bb772,
+        type: 3}
+      propertyPath: moneyColorLow.rgba
+      value: 4278195967
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21c43a9fa634df64e8da1e36225bb772, type: 3}
 --- !u!1001 &106985792
@@ -1001,12 +1011,12 @@ PrefabInstance:
     - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: MoneyGainedTextColor.rgba
-      value: 4278205780
+      value: 4278255405
       objectReference: {fileID: 0}
     - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: MoneyLostTextColor.rgba
-      value: 4278190253
+      value: 4278190335
       objectReference: {fileID: 0}
     - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
