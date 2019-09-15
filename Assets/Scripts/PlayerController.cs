@@ -26,20 +26,11 @@ public class PlayerController : MonoBehaviour
 
     public bool Failed = false;
 
-    //Have you hit payday, 
-    public bool HitPayday = false;
-
     // Start is called before the first frame update
     void Start()
     {
         targetpos = transform.position;
         transform.position = startpos;
-    }
-
-    void OnCollisionEnter(Collision collision){
-        if(collision.gameObject.tag == "HitPlayer"){
-            Failed = true;
-        }
     }
 
     // Update is called once per frame
@@ -63,7 +54,8 @@ public class PlayerController : MonoBehaviour
         }
         
         if(moving){
-			if (time > targettime){ //End of movement       
+			if (time > targettime)
+			{
 				transform.position = targetpos;
 				startpos = transform.position;
                 moving = false;
@@ -74,9 +66,7 @@ public class PlayerController : MonoBehaviour
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
-            //LEFT 
-            //if (Input.GetKey(KeyCode.A)) {
-             if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") < 0) { 
+             if (Input.GetKey(KeyCode.A)) {
                 if((x != 0) && (worldmanager.PlayerCanEnter(playerPos, Vector3.left, tilesize * 1.0f))){
                     targettime = time + stepTime;
 					x -= 1;
@@ -84,11 +74,7 @@ public class PlayerController : MonoBehaviour
 					targetpos = transform.position + Vector3.left * tilesize;
 					moving = true;
 				}
-            }
-             //RIGHT
-             //else if (Input.GetKey(KeyCode.D)) {
-             else if (Input.GetButton("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
-            {
+            }else if (Input.GetKey(KeyCode.D)) {
                 if((x != 9) && (worldmanager.PlayerCanEnter(playerPos, Vector3.right, tilesize * 1.0f))){
 					targettime = time + stepTime;
 					x += 1;
@@ -96,10 +82,8 @@ public class PlayerController : MonoBehaviour
 					targetpos = transform.position + Vector3.right * tilesize;
 					moving = true;
                 }
-            }
-            //F 
-            //else if (Input.GetKey(KeyCode.W)){
-			else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") > 0) {
+            }else if (Input.GetKey(KeyCode.W))
+			{
                 if(worldmanager.PlayerCanEnter(playerPos, Vector3.forward, tilesize * 1.0f))
 				{
                     z += 1;

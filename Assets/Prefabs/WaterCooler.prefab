@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 107697865795557186}
   m_Layer: 0
   m_Name: WaterCooler
-  m_TagString: HitPlayer
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,16 +102,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: water cooler
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 3c075e88ebd8b0a4691cbe922028f0c1,
-        type: 3}
-      propertyPath: m_TagString
-      value: HitPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: -5102530947620581811, guid: 3c075e88ebd8b0a4691cbe922028f0c1,
-        type: 3}
-      propertyPath: m_TagString
-      value: HitPlayer
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3c075e88ebd8b0a4691cbe922028f0c1,
         type: 3}

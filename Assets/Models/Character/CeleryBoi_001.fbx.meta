@@ -3,47 +3,7 @@ guid: 57c7737e06c363b429dc8639165bd11c
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: black
-    second: {fileID: 2100000, guid: 5e1e2c8b406d17445a619e23f06dc4af, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: brown
-    second: {fileID: 2100000, guid: 72f071d38644418498281cf466db82f0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: dark_green
-    second: {fileID: 2100000, guid: b888d5eb2d65e5a49bb7fa0bcea03bf0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: green
-    second: {fileID: 2100000, guid: 4f411d275623d2145b178f1c401241d0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: orange
-    second: {fileID: 2100000, guid: 7d4ba593874c4e5439217dee08dcd182, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: suit_col
-    second: {fileID: 2100000, guid: 0eb37b869231114449dfcdf377cfac2d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: white
-    second: {fileID: 2100000, guid: 5e90c1ea08e3c6e4a87f99740df3ac4c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: yellow_briefcase_buckle
-    second: {fileID: 2100000, guid: 6bdd6fe29dc76da4b8181344ae6a7350, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
