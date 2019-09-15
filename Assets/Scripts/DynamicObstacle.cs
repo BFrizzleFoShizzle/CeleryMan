@@ -7,6 +7,7 @@ public class DynamicObstacle : MonoBehaviour
 
 	public float speed = 5;
 	private Rigidbody rb;
+	private bool hasDoneMeanStunts = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +29,16 @@ public class DynamicObstacle : MonoBehaviour
 		if (Random.Range(0, 100) == 1)
 			rb.velocity = rb.velocity + (new Vector3(0, Random.Range(1, 3), 0));
 
+	}
+
+	public bool HasDoneMeanStunts()
+	{
+		return hasDoneMeanStunts;
+	}
+
+	public void DoMeanStunts()
+	{
+		hasDoneMeanStunts = true;
 	}
 
 	public void FlipDirection()

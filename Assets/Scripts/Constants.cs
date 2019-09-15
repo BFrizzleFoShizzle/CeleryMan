@@ -14,7 +14,8 @@ public static class Constants
     public const int PAYDAY_ROW_INTERVAL_DELTA = 3;
     public const int MONEY_START = 1000;
     public const int MONEY_PAYDAY = 500;
-    public const int MONEY__LOW_THRESHOLD = 500;
+	public const int MONEY_STUNT = 400;
+	public const int MONEY__LOW_THRESHOLD = 500;
 
     public const float SMASH_MIN_DIST = 3.0f;
     public const float SMASH_MAX_DIST = 8.0f;

@@ -251,6 +251,11 @@ public class WorldManager : MonoBehaviour
         Debug.Log("Created Row " + z);
     }
 
+	public int GetPlayerRow()
+	{
+		return _playerCurrentRow;
+	}
+
     private void DestroyRow(int z) {
         if (z>=0 && z < _worldRows.Count && _worldRows[z] != null) {
             _worldRows[z].ClearObjects();
