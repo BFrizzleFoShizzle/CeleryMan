@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
 
     public WorldManager worldmanager;
+    public GameObject ghostmarker;
     public float tilesize = Constants.TILE_SIZE;
     public bool moving = false;
 
@@ -29,12 +30,19 @@ public class PlayerController : MonoBehaviour
 
     //Have you hit payday, 
     public bool HitPayday = false;
+    public bool ChargingSmash = false;
+
+    private Vector3 StartScale;
+    private float SmashBlocks = 0.0f;
+    private GameObject ghostmarkerinst;
 
     // Start is called before the first frame update
     void Start()
     {
         targetpos = transform.position;
         transform.position = startpos;
+        StartScale = transform.localScale;
+        ghostmarkerinst = Instantiate(ghostmarker, transform.position, Quaternion.identity);
     }
 
     void OnCollisionEnter(Collision collision){
@@ -46,6 +54,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update(){
         time += Time.deltaTime;
+
+        //print("GETBUTTON, AXISRAW "+Input.GetButton("Vertical")+","+Input.GetAxisRaw("Vertical"));
 
         if(Input.GetButton("Cancel"))
         {
@@ -77,6 +87,7 @@ public class PlayerController : MonoBehaviour
                 float stepDelta = (targettime - time) / stepTime;
 			    float step = moveCurve.Evaluate(stepDelta);
 			    transform.position = (startpos * stepDelta) + (targetpos * (1.0f - stepDelta));
+                transform.localScale = StartScale;
             }
         }else{
 			Vector3 playerPos = transform.position + new Vector3(0.0f,0.1f,0.0f);
@@ -117,7 +128,40 @@ public class PlayerController : MonoBehaviour
 					targetpos = transform.position + Vector3.forward * tilesize;
 					moving = true;
                 }
-            }else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
+
+            }else if (Input.GetButton("Vertical") && Input.GetAxisRaw("Vertical") < 0) {
+                float starttime = 0;
+                SmashBlocks = 0.0f;
+                
+                if(ChargingSmash){
+                    
+                    SmashBlocks = (time-starttime)/0.5f;
+                    ghostmarkerinst.transform.position = transform.position + Vector3.forward*((int)(SmashBlocks));
+                    if(SmashBlocks > 5){
+                        SmashBlocks = 5.0f;
+                    }else{
+                        float scaleMo = Time.deltaTime*0.3f;
+                        transform.localScale = new Vector3(transform.localScale.x+transform.localScale.x*scaleMo,transform.localScale.y+transform.localScale.y*scaleMo,transform.localScale.z+transform.localScale.z*scaleMo);
+                    }
+                    
+                }else{
+                    ChargingSmash = true;
+                    starttime = time;
+                    ghostmarkerinst.transform.position = transform.position;
+                }
+            }else if (ChargingSmash && (Input.GetButton("Vertical") == false)){
+                int WholeBlocks = (int)(SmashBlocks);
+                z += WholeBlocks;
+                if(worldmanager != null){
+                    worldmanager.PlayerAdvanceToRow(z);
+                }
+			    targettime = time + stepTime;
+              
+			    targetpos = transform.position + Vector3.forward * tilesize*WholeBlocks;
+                moving = true;
+                ChargingSmash = false;
+
+			}else if (Input.GetKey(KeyCode.M)) { //Input.GetButtonDown
                 if(worldmanager.PlayerCanEnter(playerPos, Vector3.back, tilesize * 1.0f)){
                     z -= 1;
                     if(worldmanager != null){
