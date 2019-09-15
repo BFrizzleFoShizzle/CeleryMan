@@ -619,6 +619,12 @@ PrefabInstance:
       propertyPath: stepTime
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 2475533458128656078, guid: 55327cbf3a97c664a92fe2531267ac2b,
+        type: 3}
+      propertyPath: ghostmarker
+      value: 
+      objectReference: {fileID: 6862956101980873962, guid: b2302f4ca48f4fd4488dade7b681741a,
+        type: 3}
     - target: {fileID: 2475533458128656076, guid: 55327cbf3a97c664a92fe2531267ac2b,
         type: 3}
       propertyPath: m_Enabled
