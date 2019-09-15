@@ -84,7 +84,7 @@ public class WorldManager : MonoBehaviour
         // FILLER CODE!!!
         // TODO Thomas
         for (int i = 0; i < Constants.NUMBER_ROWS_AHEAD; i++) {
-            CreateRow(i);
+            CreateRow(_worldRows.Count);
         }
     }
 
@@ -197,10 +197,28 @@ public class WorldManager : MonoBehaviour
 			bool spawnChairs = RandomGeneration.RollPercentageChance(30f);
 			if (spawnPrinter)
 			{
+				int printers = 1;
+				int difficulty = _playerCurrentRow / 30;
+				// max. 30%
+				difficulty = Mathf.Min(difficulty, 3);
+				bool painAndSuffering = RandomGeneration.RollPercentageChance(difficulty * 5.0f); ;
+				if (painAndSuffering)
+					printers = Random.Range(4, 11);
+
 				rowObstacles = new int[Constants.ROW_WIDTH];
-				// all tiles are fair game
+				for (int i = 0; i < Constants.ROW_WIDTH; ++i)
+					rowObstacles[i] = -1;
+
+				for (int i = 0; i < printers; ++i)
+				{
+					bool spawnFakePrinter = RandomGeneration.RollPercentageChance(50f);
+					if(spawnFakePrinter)
+						_worldRows.Add(new WorldRow(OfficePrinterSectionPrefab, bank, z, rowObstacles, dynamicRow, paydayRow));
+					else
+						_worldRows.Add(new WorldRow(OfficePrinterSectionPrefab, DynamicPrinterPrefab, Random.Range(0, 4) * 90.0f, 0, z, dynamicRow, paydayRow));
+					++z;
+				}
 				_prevRowObstacles = rowObstacles;
-				_worldRows.Add(new WorldRow(OfficePrinterSectionPrefab, DynamicPrinterPrefab, Random.Range(0,4) * 90.0f, 0, z, dynamicRow, paydayRow));
 				_prevRowSpecial = true;
 				return;
 			}
