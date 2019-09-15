@@ -614,6 +614,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2475533458128656079, guid: 55327cbf3a97c664a92fe2531267ac2b,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55327cbf3a97c664a92fe2531267ac2b, type: 3}
 --- !u!1 &1576869220
@@ -1003,6 +1008,24 @@ PrefabInstance:
       propertyPath: MoneyLostTextColor.rgba
       value: 4278190253
       objectReference: {fileID: 0}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: DynamicTextPrefab
+      value: 
+      objectReference: {fileID: 4908407871117234138, guid: 3ce4e53a0ce215f44b2efde9c52e2478,
+        type: 3}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: DynamicPrinterPrefab
+      value: 
+      objectReference: {fileID: 4265268009902527793, guid: 70e49082e8b32ab4ba9bbab2c359e73d,
+        type: 3}
+    - target: {fileID: 8199354794647400422, guid: bd037f4dc3880314ab276a88d19d3868,
+        type: 3}
+      propertyPath: OfficePrinterSectionPrefab
+      value: 
+      objectReference: {fileID: 7655503633372837963, guid: 24587224fb238a646a998d14e54f0485,
+        type: 3}
     - target: {fileID: 8199354794647400423, guid: bd037f4dc3880314ab276a88d19d3868,
         type: 3}
       propertyPath: m_LocalPosition.x

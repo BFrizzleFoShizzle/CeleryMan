@@ -1,11 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldManager : MonoBehaviour
 {
     public GameObject OfficeSectionPrefab;
-    public GameObject OfficePaydaySectionPrefab;
+	public GameObject OfficePrinterSectionPrefab;
+	public GameObject OfficePaydaySectionPrefab;
+	public GameObject DynamicPrinterPrefab;
     public ObstacleBank ObstacleBank;
 	public ObstacleBank DynamicObstacleBank;
     public GameObject DynamicTextPrefab;
@@ -14,7 +16,7 @@ public class WorldManager : MonoBehaviour
 
     private class WorldRow {
         private GameObject _officeSectionObject;
-        private GameObject[] _obstacleObjects;
+		private GameObject[] _obstacleObjects;
         private int[] _obstacles;
         public bool IsDynamicObjectRow { get; private set; }
         public bool IsPaydayRow { get; private set; }
@@ -34,7 +36,20 @@ public class WorldManager : MonoBehaviour
             }
         }
 
-        public void ClearObjects() {
+		// spawn row with 1 obstacle
+		public WorldRow(GameObject officeSectionPrefab, GameObject obstaclePrefab, int z, bool isDynamicObjectRow, bool isPaydayRow)
+		{
+			IsDynamicObjectRow = isDynamicObjectRow;
+			IsPaydayRow = isPaydayRow;
+			_obstacles = new int[Constants.ROW_WIDTH];
+			_obstacleObjects = new GameObject[_obstacles.Length];
+			_officeSectionObject = Instantiate(officeSectionPrefab, new Vector3(0, 0, z), Quaternion.identity);
+			float xOffset = Constants.TILE_SIZE * 0.5f * (_obstacles.Length - 1);
+			_obstacleObjects[0] = Instantiate(obstaclePrefab, new Vector3(0 - xOffset, 0, z), Quaternion.identity);
+			_obstacleObjects[0].transform.Rotate(0f, 90f * Random.Range(0, 4), 0f);
+		}
+
+		public void ClearObjects() {
             Destroy(_officeSectionObject);
             for (int i = 0; i < _obstacles.Length; i++) {
                 if (_obstacles[i] != Constants.EMPTY_TILE_INDEX) Destroy(_obstacleObjects[i]);
@@ -63,6 +78,8 @@ public class WorldManager : MonoBehaviour
 
     void Start()
     {
+		Debug.Assert(DynamicPrinterPrefab != null);
+
         // FILLER CODE!!!
         // TODO Thomas
         for (int i = 0; i < Constants.NUMBER_ROWS_AHEAD; i++) {
@@ -175,10 +192,25 @@ public class WorldManager : MonoBehaviour
         }
 		else if (dynamicRow)
 		{
-			rowObstacles = RandomGeneration.GenerateRowObstacles_Dynamic(DynamicObstacleBank);
-			bank = DynamicObstacleBank;
-            _prevRowSpecial = true;
+			bool spawnPrinter = RandomGeneration.RollPercentageChance(30f);
 
+			if (spawnPrinter)
+			{
+				Debug.Log("Spawning printer");
+				rowObstacles = new int[Constants.ROW_WIDTH];
+				// all tiles are fair game
+				_prevRowObstacles = rowObstacles;
+				_worldRows.Add(new WorldRow(OfficePrinterSectionPrefab, DynamicPrinterPrefab, z, dynamicRow, paydayRow));
+				_prevRowSpecial = true;
+				return;
+			}
+			else
+			{
+
+				rowObstacles = RandomGeneration.GenerateRowObstacles_Dynamic(DynamicObstacleBank);
+				bank = DynamicObstacleBank;
+				_prevRowSpecial = true;
+			}
         }
 		else
 		{
